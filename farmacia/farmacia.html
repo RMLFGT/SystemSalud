@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Farmacia | SaludSystem</title>
+
+    <link rel="stylesheet" href="farmacia.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏥
+            <span>Salud<span>System</span></span>
+        </div>
+
+        <nav>
+
+            <a href="../index.html">
+                🏠
+                <span>Inicio</span>
+            </a>
+
+            <a href="../pacientes/pacientes.html">
+                👤
+                <span>Pacientes</span>
+            </a>
+
+            <a href="../medicos/medicos.html">
+                👨‍⚕️
+                <span>Médicos</span>
+            </a>
+
+            <a href="../citas/citas.html">
+                📅
+                <span>Citas</span>
+            </a>
+
+            <a href="../expedientes/expedientes.html">
+                📋
+                <span>Expedientes</span>
+            </a>
+
+            <a href="../laboratorio/laboratorio.html">
+                🧪
+                <span>Laboratorio</span>
+            </a>
+
+            <a href="farmacia.html" class="active">
+                💊
+                <span>Farmacia</span>
+            </a>
+
+            <a href="../reportes/reportes.html">
+                📊
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="../configuracion/configuracion.html">
+                ⚙️
+                <span>Configuración</span>
+            </a>
+
+            <a href="#">
+                🚪
+                <span>Cerrar sesión</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Farmacia</h1>
+
+                <p>
+                    Gestión de medicamentos e inventario
+                </p>
+            </div>
+
+            <div class="user">
+
+                <div class="user-icon">
+                    👨‍💼
+                </div>
+
+                <div>
+                    <strong>Administrador</strong>
+
+                    <small>
+                        Administrador
+                    </small>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    💊
+                </div>
+
+                <div>
+                    <strong id="totalMedicamentos">
+                        10
+                    </strong>
+
+                    <span>
+                        Medicamentos
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    📦
+                </div>
+
+                <div>
+                    <strong id="stockTotal">
+                        1,850
+                    </strong>
+
+                    <span>
+                        Unidades disponibles
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    ⚠️
+                </div>
+
+                <div>
+                    <strong id="stockBajo">
+                        3
+                    </strong>
+
+                    <span>
+                        Stock bajo
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    💰
+                </div>
+
+                <div>
+                    <strong id="valorInventario">
+                        Q 12,450
+                    </strong>
+
+                    <span>
+                        Valor del inventario
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACCIONES -->
+
+        <section class="actions">
+
+            <div class="search">
+
+                <input
+                    type="text"
+                    id="buscarMedicamento"
+                    placeholder="Buscar medicamento..."
+                >
+
+                <button onclick="buscarMedicamento()">
+                    🔍 Buscar
+                </button>
+
+            </div>
+
+
+            <button
+                class="btn-primary"
+                onclick="abrirFormulario()"
+            >
+                + Nuevo medicamento
+            </button>
+
+        </section>
+
+
+        <!-- INVENTARIO -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Inventario de medicamentos
+                    </h2>
+
+                    <p>
+                        Control de existencias y productos disponibles
+                    </p>
+
+                </div>
+
+                <span
+                    class="total"
+                    id="contador"
+                >
+                    10 medicamentos
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Código</th>
+
+                            <th>Medicamento</th>
+
+                            <th>Categoría</th>
+
+                            <th>Presentación</th>
+
+                            <th>Stock</th>
+
+                            <th>Precio</th>
+
+                            <th>Vencimiento</th>
+
+                            <th>Estado</th>
+
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaFarmacia"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL -->
+
+    <div
+        class="modal"
+        id="modalFarmacia"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="tituloFormulario">
+                        Nuevo medicamento
+                    </h2>
+
+                    <p>
+                        Registrar medicamento en inventario
+                    </p>
+
+                </div>
+
+                <button
+                    class="close"
+                    onclick="cerrarFormulario()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <form id="formFarmacia">
+
+                <div class="form-section">
+
+                    <h3>
+                        Información del medicamento
+                    </h3>
+
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nombre"
+                                placeholder="Ej. Paracetamol"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Categoría
+                            </label>
+
+                            <select id="categoria" required>
+
+                                <option value="">
+                                    Seleccionar categoría
+                                </option>
+
+                                <option>
+                                    Analgésicos
+                                </option>
+
+                                <option>
+                                    Antibióticos
+                                </option>
+
+                                <option>
+                                    Antiinflamatorios
+                                </option>
+
+                                <option>
+                                    Antihistamínicos
+                                </option>
+
+                                <option>
+                                    Vitaminas
+                                </option>
+
+                                <option>
+                                    Cardiovasculares
+                                </option>
+
+                                <option>
+                                    Gastrointestinales
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Presentación
+                            </label>
+
+                            <input
+                                type="text"
+                                id="presentacion"
+                                placeholder="Ej. Caja x 20 tabletas"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Laboratorio
+                            </label>
+
+                            <input
+                                type="text"
+                                id="laboratorio"
+                                placeholder="Laboratorio fabricante"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Stock
+                            </label>
+
+                            <input
+                                type="number"
+                                id="stock"
+                                min="0"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Stock mínimo
+                            </label>
+
+                            <input
+                                type="number"
+                                id="stockMinimo"
+                                min="0"
+                                value="20"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Precio
+                            </label>
+
+                            <input
+                                type="number"
+                                id="precio"
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Fecha de vencimiento
+                            </label>
+
+                            <input
+                                type="date"
+                                id="vencimiento"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-section">
+
+                    <div class="form-group">
+
+                        <label>
+                            Descripción / Observaciones
+                        </label>
+
+                        <textarea
+                            id="descripcion"
+                            placeholder="Información adicional..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        onclick="cerrarFormulario()"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        💾 Guardar medicamento
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="farmacia.js"></script>
+
+</body>
+</html>

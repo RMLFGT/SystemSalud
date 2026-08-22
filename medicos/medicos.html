@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Médicos | SaludSystem</title>
+
+    <link rel="stylesheet" href="medicos.css">
+
+</head>
+
+<body>
+
+    <!-- MENÚ LATERAL -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏥
+            <span>Salud<span>System</span></span>
+        </div>
+
+        <nav>
+
+            <a href="../index.html">
+                🏠
+                <span>Inicio</span>
+            </a>
+
+            <a href="../pacientes/pacientes.html">
+                👤
+                <span>Pacientes</span>
+            </a>
+
+            <a href="medicos.html" class="active">
+                👨‍⚕️
+                <span>Médicos</span>
+            </a>
+
+            <a href="../citas/citas.html">
+                📅
+                <span>Citas</span>
+            </a>
+
+            <a href="../expedientes/expedientes.html">
+                📋
+                <span>Expedientes</span>
+            </a>
+
+            <a href="../laboratorio/laboratorio.html">
+                🧪
+                <span>Laboratorio</span>
+            </a>
+
+            <a href="../farmacia/farmacia.html">
+                💊
+                <span>Farmacia</span>
+            </a>
+
+            <a href="../reportes/reportes.html">
+                📊
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="../configuracion/configuracion.html">
+                ⚙️
+                <span>Configuración</span>
+            </a>
+
+            <a href="#">
+                🚪
+                <span>Cerrar sesión</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Médicos</h1>
+
+                <p>
+                    Gestión y administración del personal médico
+                </p>
+
+            </div>
+
+
+            <div class="user">
+
+                <div class="user-icon">
+                    👨‍💼
+                </div>
+
+                <div>
+
+                    <strong>Administrador</strong>
+
+                    <small>
+                        Administrador
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <strong id="totalMedicos">
+                        6
+                    </strong>
+
+                    <span>
+                        Médicos registrados
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    🟢
+                </div>
+
+                <div>
+
+                    <strong id="medicosActivos">
+                        5
+                    </strong>
+
+                    <span>
+                        Médicos activos
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    🩺
+                </div>
+
+                <div>
+
+                    <strong id="especialidades">
+                        6
+                    </strong>
+
+                    <span>
+                        Especialidades
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACCIONES -->
+
+        <section class="actions">
+
+            <div class="search">
+
+                <input
+                    type="text"
+                    id="buscarMedico"
+                    placeholder="Buscar por nombre o especialidad..."
+                >
+
+                <button onclick="buscarMedico()">
+                    🔍 Buscar
+                </button>
+
+            </div>
+
+
+            <button
+                class="btn-primary"
+                onclick="abrirFormulario()"
+            >
+                + Nuevo médico
+            </button>
+
+        </section>
+
+
+        <!-- TABLA -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>Personal médico</h2>
+
+                    <p>
+                        Médicos registrados en el sistema
+                    </p>
+
+                </div>
+
+                <span class="total">
+                    6 médicos
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Médico</th>
+
+                            <th>Especialidad</th>
+
+                            <th>Teléfono</th>
+
+                            <th>Horario</th>
+
+                            <th>Estado</th>
+
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tablaMedicos"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL -->
+
+    <div class="modal" id="modalMedico">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="tituloFormulario">
+                        Nuevo médico
+                    </h2>
+
+                    <p>
+                        Ingrese la información del médico
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close"
+                    onclick="cerrarFormulario()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <form id="formMedico">
+
+                <!-- INFORMACIÓN PERSONAL -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Información personal
+                    </h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nombre"
+                                placeholder="Ej. Carlos"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Apellido
+                            </label>
+
+                            <input
+                                type="text"
+                                id="apellido"
+                                placeholder="Ej. Ramírez"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Número de colegiado
+                            </label>
+
+                            <input
+                                type="text"
+                                id="colegiado"
+                                placeholder="Ej. 45821"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Especialidad
+                            </label>
+
+                            <select
+                                id="especialidad"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar
+                                </option>
+
+                                <option>
+                                    Medicina General
+                                </option>
+
+                                <option>
+                                    Cardiología
+                                </option>
+
+                                <option>
+                                    Pediatría
+                                </option>
+
+                                <option>
+                                    Dermatología
+                                </option>
+
+                                <option>
+                                    Ginecología
+                                </option>
+
+                                <option>
+                                    Traumatología
+                                </option>
+
+                                <option>
+                                    Neurología
+                                </option>
+
+                                <option>
+                                    Oftalmología
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONTACTO -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Información de contacto
+                    </h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Teléfono
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="telefono"
+                                placeholder="5555-5555"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Correo electrónico
+                            </label>
+
+                            <input
+                                type="email"
+                                id="correo"
+                                placeholder="doctor@email.com"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HORARIO -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Información laboral
+                    </h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Horario
+                            </label>
+
+                            <select
+                                id="horario"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar
+                                </option>
+
+                                <option>
+                                    07:00 AM - 01:00 PM
+                                </option>
+
+                                <option>
+                                    08:00 AM - 02:00 PM
+                                </option>
+
+                                <option>
+                                    09:00 AM - 03:00 PM
+                                </option>
+
+                                <option>
+                                    02:00 PM - 08:00 PM
+                                </option>
+
+                                <option>
+                                    03:00 PM - 09:00 PM
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Estado
+                            </label>
+
+                            <select id="estado">
+
+                                <option value="Activo">
+                                    Activo
+                                </option>
+
+                                <option value="Inactivo">
+                                    Inactivo
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER -->
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        onclick="cerrarFormulario()"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        💾 Guardar médico
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="medicos.js"></script>
+
+</body>
+
+</html>

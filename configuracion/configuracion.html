@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Configuración | SaludSystem</title>
+
+    <link
+        rel="stylesheet"
+        href="configuracion.css"
+    >
+
+</head>
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            🏥
+
+            <span>
+                Salud<span>System</span>
+            </span>
+
+        </div>
+
+
+        <nav>
+
+            <a href="../index.html">
+                🏠
+                <span>Inicio</span>
+            </a>
+
+
+            <a href="../pacientes/pacientes.html">
+                👤
+                <span>Pacientes</span>
+            </a>
+
+
+            <a href="../medicos/medicos.html">
+                👨‍⚕️
+                <span>Médicos</span>
+            </a>
+
+
+            <a href="../citas/citas.html">
+                📅
+                <span>Citas</span>
+            </a>
+
+
+            <a href="../expedientes/expedientes.html">
+                📋
+                <span>Expedientes</span>
+            </a>
+
+
+            <a href="../laboratorio/laboratorio.html">
+                🧪
+                <span>Laboratorio</span>
+            </a>
+
+
+            <a href="../farmacia/farmacia.html">
+                💊
+                <span>Farmacia</span>
+            </a>
+
+
+            <a href="../reportes/reportes.html">
+                📊
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="configuracion.html"
+                class="active"
+            >
+                ⚙️
+                <span>Configuración</span>
+            </a>
+
+
+            <a href="../login/login.html">
+                🚪
+                <span>Cerrar sesión</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Configuración
+                </h1>
+
+                <p>
+                    Personaliza las preferencias del sistema
+                </p>
+
+            </div>
+
+
+            <div class="user">
+
+                <div class="user-icon">
+                    👨‍💼
+                </div>
+
+                <div>
+
+                    <strong>
+                        Administrador
+                    </strong>
+
+                    <small>
+                        Administrador
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENIDO -->
+
+        <section class="settings-container">
+
+
+            <!-- PERFIL -->
+
+            <div class="settings-card">
+
+                <div class="card-header">
+
+                    <div class="header-icon blue">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Perfil de usuario
+                        </h2>
+
+                        <p>
+                            Información de la cuenta del administrador
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile">
+
+                    <div class="profile-avatar">
+                        👨‍💼
+                    </div>
+
+
+                    <div class="profile-info">
+
+                        <h3>
+                            Administrador
+                        </h3>
+
+                        <p>
+                            administrador@saludsystem.com
+                        </p>
+
+                        <span>
+                            Administrador del sistema
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="btn-secondary"
+                        onclick="editarPerfil()"
+                    >
+                        ✏️ Editar perfil
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- NOTIFICACIONES -->
+
+            <div class="settings-card">
+
+                <div class="card-header">
+
+                    <div class="header-icon orange">
+                        🔔
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Notificaciones
+                        </h2>
+
+                        <p>
+                            Configura las alertas del sistema
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Notificaciones generales
+                        </strong>
+
+                        <span>
+                            Recibir avisos importantes del sistema
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="notificaciones"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Recordatorios de citas
+                        </strong>
+
+                        <span>
+                            Recibir alertas sobre próximas citas
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="recordatorios"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Alertas de farmacia
+                        </strong>
+
+                        <span>
+                            Avisos cuando un medicamento tenga stock bajo
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="farmacia"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- APARIENCIA -->
+
+            <div class="settings-card">
+
+                <div class="card-header">
+
+                    <div class="header-icon purple">
+                        🎨
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Apariencia
+                        </h2>
+
+                        <p>
+                            Personaliza la apariencia del sistema
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Tema oscuro
+                        </strong>
+
+                        <span>
+                            Cambiar entre tema claro y oscuro
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="temaOscuro"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div>
+
+                        <strong>
+                            Animaciones
+                        </strong>
+
+                        <span>
+                            Mostrar efectos visuales del sistema
+                        </span>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="animaciones"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SEGURIDAD -->
+
+            <div class="settings-card">
+
+                <div class="card-header">
+
+                    <div class="header-icon green">
+                        🔐
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Seguridad
+                        </h2>
+
+                        <p>
+                            Opciones de seguridad de la cuenta
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="security-actions">
+
+                    <button
+                        onclick="cambiarPassword()"
+                    >
+                        🔑 Cambiar contraseña
+                    </button>
+
+
+                    <button
+                        onclick="cerrarTodasLasSesiones()"
+                    >
+                        🚪 Cerrar todas las sesiones
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PREFERENCIAS -->
+
+            <div class="settings-card">
+
+                <div class="card-header">
+
+                    <div class="header-icon blue">
+                        🌐
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Preferencias
+                        </h2>
+
+                        <p>
+                            Configuración general del sistema
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="preferences">
+
+                    <div class="form-group">
+
+                        <label>
+                            Idioma
+                        </label>
+
+                        <select id="idioma">
+
+                            <option value="es">
+                                Español
+                            </option>
+
+                            <option value="en">
+                                English
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Zona horaria
+                        </label>
+
+                        <select id="zona">
+
+                            <option>
+                                Guatemala (GMT-6)
+                            </option>
+
+                            <option>
+                                México (GMT-6)
+                            </option>
+
+                            <option>
+                                Estados Unidos (GMT-5)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BOTONES -->
+
+            <div class="actions">
+
+                <button
+                    class="btn-reset"
+                    onclick="restaurarConfiguracion()"
+                >
+                    🔄 Restaurar valores
+                </button>
+
+
+                <button
+                    class="btn-save"
+                    onclick="guardarConfiguracion()"
+                >
+                    💾 Guardar cambios
+                </button>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <script src="configuracion.js"></script>
+
+</body>
+
+</html>

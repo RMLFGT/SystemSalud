@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sistema de Gestión de Salud</title>
+
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+    <!-- MENÚ LATERAL -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏥
+            <span>Salud<span>System</span></span>
+        </div>
+
+        <nav>
+
+            <a href="index.html" class="active">
+                🏠
+            <span>Inicio</span>
+        </a>
+
+            <a href="pacientes/pacientes.html">
+                👤
+            <span>Pacientes</span>
+        </a>
+
+        <a href="medicos/medicos.html">
+            👨‍⚕️
+            <span>Médicos</span>
+        </a>
+
+        <a href="citas/citas.html">
+            📅
+            <span>Citas</span>
+        </a>
+
+        <a href="expedientes/expedientes.html">
+            📋
+            <span>Expedientes</span>
+        </a>
+
+        <a href="laboratorio/laboratorio.html">
+            🧪
+            <span>Laboratorio</span>
+        </a>
+
+        <a href="farmacia/farmacia.html">
+            💊
+            <span>Farmacia</span>
+        </a>
+
+        <a href="reportes/reportes.html">
+            📊
+            <span>Reportes</span>
+        </a>
+        
+
+    </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="configuracion/configuracion.html">
+                ⚙️
+                 <span>Configuración</span>
+            </a>
+
+            <a href="login/login.html" id="cerrarSesion">
+                🚪
+                <span>Cerrar sesión</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+
+        <!-- BARRA SUPERIOR -->
+        <header class="topbar">
+
+            <div>
+                <h2>Dashboard</h2>
+                <p>Bienvenido al Sistema de Gestión de Salud</p>
+            </div>
+
+            <div class="user">
+
+                <div class="user-icon">
+                    👨‍💼
+                </div>
+
+                <div>
+                    <strong>Administrador</strong>
+                    <small>Administrador</small>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- TARJETAS -->
+        <section class="cards">
+
+            <div class="card">
+
+                <div class="card-icon blue">
+                    👤
+                </div>
+
+                <div>
+                    <h3>1,248</h3>
+                    <p>Pacientes registrados</p>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon green">
+                    📅
+                </div>
+
+                <div>
+                    <h3>86</h3>
+                    <p>Citas para hoy</p>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon purple">
+                    👨‍⚕️
+                </div>
+
+                <div>
+                    <h3>42</h3>
+                    <p>Médicos activos</p>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-icon orange">
+                    🧪
+                </div>
+
+                <div>
+                    <h3>27</h3>
+                    <p>Resultados pendientes</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTENIDO -->
+        <section class="dashboard-grid">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>Próximas citas</h3>
+
+                    <button>Ver todas</button>
+
+                </div>
+
+
+                <div class="appointment">
+
+                    <div class="patient">
+                        <div class="avatar">JP</div>
+
+                        <div>
+                            <strong>Juan Pérez</strong>
+                            <small>Medicina General</small>
+                        </div>
+                    </div>
+
+                    <span>09:00 AM</span>
+
+                </div>
+
+
+                <div class="appointment">
+
+                    <div class="patient">
+                        <div class="avatar">MG</div>
+
+                        <div>
+                            <strong>María González</strong>
+                            <small>Cardiología</small>
+                        </div>
+                    </div>
+
+                    <span>10:30 AM</span>
+
+                </div>
+
+
+                <div class="appointment">
+
+                    <div class="patient">
+                        <div class="avatar">CR</div>
+
+                        <div>
+                            <strong>Carlos Ramírez</strong>
+                            <small>Dermatología</small>
+                        </div>
+                    </div>
+
+                    <span>12:00 PM</span>
+
+                </div>
+
+
+                <div class="appointment">
+
+                    <div class="patient">
+                        <div class="avatar">LS</div>
+
+                        <div>
+                            <strong>Laura Sánchez</strong>
+                            <small>Pediatría</small>
+                        </div>
+                    </div>
+
+                    <span>02:00 PM</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>Resumen</h3>
+
+                </div>
+
+                <div class="summary">
+
+                    <div>
+                        <span>Pacientes nuevos</span>
+                        <strong>+18%</strong>
+                    </div>
+
+                    <div>
+                        <span>Citas completadas</span>
+                        <strong>92%</strong>
+                    </div>
+
+                    <div>
+                        <span>Consultas pendientes</span>
+                        <strong>14</strong>
+                    </div>
+
+                    <div>
+                        <span>Facturación mensual</span>
+                        <strong>Q 45,850</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <p>SaludSystem es una red de servicios de salud dedicada a brindar atención integral y de calidad a nuestra comunidad.</p>
+            <p><strong>Inició operaciones en el año 2000.</strong></p>
+        </div>
+    </footer>
+
+    <script src="index.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laboratorio | SaludSystem</title>
+
+    <link rel="stylesheet" href="laboratorio.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏥
+            <span>Salud<span>System</span></span>
+        </div>
+
+        <nav>
+
+            <a href="../index.html">
+                🏠
+                <span>Inicio</span>
+            </a>
+
+            <a href="../pacientes/pacientes.html">
+                👤
+                <span>Pacientes</span>
+            </a>
+
+            <a href="../medicos/medicos.html">
+                👨‍⚕️
+                <span>Médicos</span>
+            </a>
+
+            <a href="../citas/citas.html">
+                📅
+                <span>Citas</span>
+            </a>
+
+            <a href="../expedientes/expedientes.html">
+                📋
+                <span>Expedientes</span>
+            </a>
+
+            <a href="laboratorio.html" class="active">
+                🧪
+                <span>Laboratorio</span>
+            </a>
+
+            <a href="../farmacia/farmacia.html">
+                💊
+                <span>Farmacia</span>
+            </a>
+
+            <a href="../reportes/reportes.html">
+                📊
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="../configuracion/configuracion.html">
+                ⚙️
+                <span>Configuración</span>
+            </a>
+
+            <a href="#">
+                🚪
+                <span>Cerrar sesión</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+                <h1>Laboratorio</h1>
+
+                <p>
+                    Gestión de estudios y resultados clínicos
+                </p>
+            </div>
+
+            <div class="user">
+
+                <div class="user-icon">
+                    👨‍💼
+                </div>
+
+                <div>
+                    <strong>Administrador</strong>
+
+                    <small>
+                        Administrador
+                    </small>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    🧪
+                </div>
+
+                <div>
+                    <strong id="totalEstudios">
+                        8
+                    </strong>
+
+                    <span>
+                        Estudios registrados
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    ⏳
+                </div>
+
+                <div>
+                    <strong id="pendientes">
+                        3
+                    </strong>
+
+                    <span>
+                        Pendientes
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    ✅
+                </div>
+
+                <div>
+                    <strong id="completados">
+                        4
+                    </strong>
+
+                    <span>
+                        Resultados listos
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    📅
+                </div>
+
+                <div>
+                    <strong>
+                        12
+                    </strong>
+
+                    <span>
+                        Estudios este mes
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ACCIONES -->
+
+        <section class="actions">
+
+            <div class="search">
+
+                <input
+                    type="text"
+                    id="buscarEstudio"
+                    placeholder="Buscar paciente o estudio..."
+                >
+
+                <button onclick="buscarEstudio()">
+                    🔍 Buscar
+                </button>
+
+            </div>
+
+
+            <button
+                class="btn-primary"
+                onclick="abrirFormulario()"
+            >
+                + Nuevo estudio
+            </button>
+
+        </section>
+
+
+        <!-- TABLA -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Estudios de laboratorio
+                    </h2>
+
+                    <p>
+                        Control y seguimiento de estudios clínicos
+                    </p>
+
+                </div>
+
+                <span
+                    class="total"
+                    id="contador"
+                >
+                    8 estudios
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Paciente</th>
+
+                            <th>Estudio</th>
+
+                            <th>Fecha</th>
+
+                            <th>Solicitado por</th>
+
+                            <th>Resultado</th>
+
+                            <th>Estado</th>
+
+                            <th>Acciones</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaLaboratorio"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- MODAL NUEVO ESTUDIO -->
+
+    <div
+        class="modal"
+        id="modalLaboratorio"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="tituloFormulario">
+                        Nuevo estudio
+                    </h2>
+
+                    <p>
+                        Registrar estudio de laboratorio
+                    </p>
+
+                </div>
+
+                <button
+                    class="close"
+                    onclick="cerrarFormulario()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <form id="formLaboratorio">
+
+                <div class="form-section">
+
+                    <h3>
+                        Información del estudio
+                    </h3>
+
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Paciente
+                            </label>
+
+                            <select
+                                id="paciente"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar paciente
+                                </option>
+
+                                <option>
+                                    Juan Pérez
+                                </option>
+
+                                <option>
+                                    María González
+                                </option>
+
+                                <option>
+                                    Carlos Ramírez
+                                </option>
+
+                                <option>
+                                    Laura Sánchez
+                                </option>
+
+                                <option>
+                                    Ana López
+                                </option>
+
+                                <option>
+                                    Pedro García
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Tipo de estudio
+                            </label>
+
+                            <select
+                                id="estudio"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar estudio
+                                </option>
+
+                                <option>
+                                    Hemograma
+                                </option>
+
+                                <option>
+                                    Glucosa
+                                </option>
+
+                                <option>
+                                    Perfil lipídico
+                                </option>
+
+                                <option>
+                                    Examen de orina
+                                </option>
+
+                                <option>
+                                    Prueba de embarazo
+                                </option>
+
+                                <option>
+                                    Química sanguínea
+                                </option>
+
+                                <option>
+                                    Pruebas hepáticas
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Fecha
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fecha"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Médico solicitante
+                            </label>
+
+                            <select
+                                id="medico"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar médico
+                                </option>
+
+                                <option>
+                                    Dr. Carlos Ramírez
+                                </option>
+
+                                <option>
+                                    Dra. Ana Gómez
+                                </option>
+
+                                <option>
+                                    Dr. Luis Morales
+                                </option>
+
+                                <option>
+                                    Dra. Sofía Castillo
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-section">
+
+                    <h3>
+                        Resultado
+                    </h3>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Resultado del estudio
+                        </label>
+
+                        <textarea
+                            id="resultado"
+                            placeholder="Ingrese los resultados obtenidos..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Estado
+                            </label>
+
+                            <select id="estado">
+
+                                <option>
+                                    Pendiente
+                                </option>
+
+                                <option>
+                                    En proceso
+                                </option>
+
+                                <option>
+                                    Completado
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Observaciones
+                            </label>
+
+                            <input
+                                type="text"
+                                id="observaciones"
+                                placeholder="Observaciones"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        onclick="cerrarFormulario()"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        💾 Guardar estudio
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODAL RESULTADO -->
+
+    <div
+        class="modal"
+        id="modalResultado"
+    >
+
+        <div class="modal-content result-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2>
+                        Resultado de laboratorio
+                    </h2>
+
+                    <p id="resultadoPaciente"></p>
+
+                </div>
+
+                <button
+                    class="close"
+                    onclick="cerrarResultado()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <div
+                id="contenidoResultado"
+                class="resultado-detalle"
+            ></div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn-cancel"
+                    onclick="cerrarResultado()"
+                >
+                    Cerrar
+                </button>
+
+                <button
+                    class="btn-primary"
+                    onclick="imprimirResultado()"
+                >
+                    🖨️ Imprimir
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="laboratorio.js"></script>
+
+</body>
+
+</html>

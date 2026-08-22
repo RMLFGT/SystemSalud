@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Citas | SaludSystem</title>
+
+    <link
+        rel="stylesheet"
+        href="citas.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         MENÚ LATERAL
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            🏥
+
+            <span>
+                Salud<span>System</span>
+            </span>
+
+        </div>
+
+
+        <nav>
+
+            <a href="../index.html">
+                🏠
+                <span>Inicio</span>
+            </a>
+
+
+            <a href="../pacientes/pacientes.html">
+                👤
+                <span>Pacientes</span>
+            </a>
+
+
+            <a href="../medicos/medicos.html">
+                👨‍⚕️
+                <span>Médicos</span>
+            </a>
+
+
+            <a
+                href="citas.html"
+                class="active"
+            >
+                📅
+                <span>Citas</span>
+            </a>
+
+
+            <a href="../expedientes/expedientes.html">
+                📋
+                <span>Expedientes</span>
+            </a>
+
+
+            <a href="../laboratorio/laboratorio.html">
+                🧪
+                <span>Laboratorio</span>
+            </a>
+
+
+            <a href="../farmacia/farmacia.html">
+                💊
+                <span>Farmacia</span>
+            </a>
+
+
+            <a href="../reportes/reportes.html">
+                📊
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="../configuracion/configuracion.html">
+                ⚙️
+                <span>Configuración</span>
+            </a>
+
+
+            <a href="#">
+                🚪
+                <span>Cerrar sesión</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         CONTENIDO
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Citas médicas
+                </h1>
+
+                <p>
+                    Gestión y programación de citas
+                </p>
+
+            </div>
+
+
+            <div class="user">
+
+                <div class="user-icon">
+                    👨‍💼
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Administrador
+                    </strong>
+
+                    <small>
+                        Administrador
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================
+             ESTADÍSTICAS
+        ========================== -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    📅
+                </div>
+
+
+                <div>
+
+                    <strong id="totalCitas">
+                        8
+                    </strong>
+
+                    <span>
+                        Citas registradas
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    🟢
+                </div>
+
+
+                <div>
+
+                    <strong id="citasConfirmadas">
+                        4
+                    </strong>
+
+                    <span>
+                        Confirmadas
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon yellow">
+                    🟡
+                </div>
+
+
+                <div>
+
+                    <strong id="citasPendientes">
+                        3
+                    </strong>
+
+                    <span>
+                        Pendientes
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon red">
+                    🔴
+                </div>
+
+
+                <div>
+
+                    <strong id="citasCanceladas">
+                        1
+                    </strong>
+
+                    <span>
+                        Canceladas
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             ACCIONES
+        ========================== -->
+
+        <section class="actions">
+
+
+            <div class="search">
+
+                <input
+                    type="text"
+                    id="buscarCita"
+                    placeholder="Buscar paciente o médico..."
+                >
+
+
+                <button onclick="buscarCita()">
+                    🔍 Buscar
+                </button>
+
+            </div>
+
+
+            <button
+                class="btn-primary"
+                onclick="abrirFormulario()"
+            >
+                + Nueva cita
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================
+             FILTROS
+        ========================== -->
+
+        <section class="filters">
+
+            <div>
+
+                <label>
+                    Fecha
+                </label>
+
+                <input
+                    type="date"
+                    id="filtroFecha"
+                    onchange="filtrarCitas()"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Estado
+                </label>
+
+                <select
+                    id="filtroEstado"
+                    onchange="filtrarCitas()"
+                >
+
+                    <option value="">
+                        Todos
+                    </option>
+
+                    <option value="Confirmada">
+                        Confirmadas
+                    </option>
+
+                    <option value="Pendiente">
+                        Pendientes
+                    </option>
+
+                    <option value="Cancelada">
+                        Canceladas
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="btn-clear"
+                onclick="limpiarFiltros()"
+            >
+                Limpiar filtros
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================
+             TABLA
+        ========================== -->
+
+        <section class="panel">
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Agenda de citas
+                    </h2>
+
+                    <p>
+                        Citas programadas en el sistema
+                    </p>
+
+                </div>
+
+
+                <span class="total">
+                    8 citas
+                </span>
+
+            </div>
+
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Paciente
+                            </th>
+
+                            <th>
+                                Médico
+                            </th>
+
+                            <th>
+                                Especialidad
+                            </th>
+
+                            <th>
+                                Fecha
+                            </th>
+
+                            <th>
+                                Hora
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                            <th>
+                                Acciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tablaCitas">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================
+         MODAL NUEVA CITA
+    ========================== -->
+
+    <div
+        class="modal"
+        id="modalCita"
+    >
+
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h2 id="tituloFormulario">
+                        Nueva cita
+                    </h2>
+
+                    <p>
+                        Complete la información de la cita
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="close"
+                    onclick="cerrarFormulario()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+
+            <form id="formCita">
+
+
+                <!-- PACIENTE -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Información de la cita
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Paciente
+                            </label>
+
+                            <select
+                                id="paciente"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar paciente
+                                </option>
+
+                                <option>
+                                    Juan Pérez
+                                </option>
+
+                                <option>
+                                    María González
+                                </option>
+
+                                <option>
+                                    Carlos Ramírez
+                                </option>
+
+                                <option>
+                                    Laura Sánchez
+                                </option>
+
+                                <option>
+                                    Ana López
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Médico
+                            </label>
+
+                            <select
+                                id="medico"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar médico
+                                </option>
+
+                                <option>
+                                    Dr. Carlos Ramírez
+                                </option>
+
+                                <option>
+                                    Dra. Ana Gómez
+                                </option>
+
+                                <option>
+                                    Dr. Luis Morales
+                                </option>
+
+                                <option>
+                                    Dra. Sofía Castillo
+                                </option>
+
+                                <option>
+                                    Dr. Jorge Méndez
+                                </option>
+
+                                <option>
+                                    Dra. Andrea López
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Especialidad
+                            </label>
+
+                            <select
+                                id="especialidad"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar
+                                </option>
+
+                                <option>
+                                    Medicina General
+                                </option>
+
+                                <option>
+                                    Cardiología
+                                </option>
+
+                                <option>
+                                    Pediatría
+                                </option>
+
+                                <option>
+                                    Dermatología
+                                </option>
+
+                                <option>
+                                    Ginecología
+                                </option>
+
+                                <option>
+                                    Traumatología
+                                </option>
+
+                                <option>
+                                    Neurología
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Motivo de consulta
+                            </label>
+
+                            <input
+                                type="text"
+                                id="motivo"
+                                placeholder="Ej. Consulta general"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FECHA -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Fecha y horario
+                    </h3>
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Fecha
+                            </label>
+
+                            <input
+                                type="date"
+                                id="fecha"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Hora
+                            </label>
+
+                            <select
+                                id="hora"
+                                required
+                            >
+
+                                <option value="">
+                                    Seleccionar
+                                </option>
+
+                                <option>
+                                    08:00 AM
+                                </option>
+
+                                <option>
+                                    09:00 AM
+                                </option>
+
+                                <option>
+                                    10:00 AM
+                                </option>
+
+                                <option>
+                                    11:00 AM
+                                </option>
+
+                                <option>
+                                    12:00 PM
+                                </option>
+
+                                <option>
+                                    01:00 PM
+                                </option>
+
+                                <option>
+                                    02:00 PM
+                                </option>
+
+                                <option>
+                                    03:00 PM
+                                </option>
+
+                                <option>
+                                    04:00 PM
+                                </option>
+
+                                <option>
+                                    05:00 PM
+                                </option>
+
+                                <option>
+                                    06:00 PM
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Estado
+                            </label>
+
+                            <select
+                                id="estado"
+                                required
+                            >
+
+                                <option value="Pendiente">
+                                    Pendiente
+                                </option>
+
+                                <option value="Confirmada">
+                                    Confirmada
+                                </option>
+
+                                <option value="Cancelada">
+                                    Cancelada
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- NOTAS -->
+
+                <div class="form-section">
+
+                    <h3>
+                        Observaciones
+                    </h3>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Notas
+                        </label>
+
+                        <textarea
+                            id="notas"
+                            placeholder="Observaciones adicionales..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FOOTER -->
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn-cancel"
+                        onclick="cerrarFormulario()"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn-primary"
+                    >
+                        💾 Guardar cita
+                    </button>
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+
+    <script src="citas.js"></script>
+
+</body>
+
+</html>

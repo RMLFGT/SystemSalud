@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reportes | SaludSystem</title>
+
+    <link
+        rel="stylesheet"
+        href="reportes.css"
+    >
+
+</head>
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            🏥
+
+            <span>
+                Salud<span>System</span>
+            </span>
+
+        </div>
+
+
+        <nav>
+
+            <a href="../index.html">
+                🏠
+                <span>Inicio</span>
+            </a>
+
+
+            <a href="../pacientes/pacientes.html">
+                👤
+                <span>Pacientes</span>
+            </a>
+
+
+            <a href="../medicos/medicos.html">
+                👨‍⚕️
+                <span>Médicos</span>
+            </a>
+
+
+            <a href="../citas/citas.html">
+                📅
+                <span>Citas</span>
+            </a>
+
+
+            <a href="../expedientes/expedientes.html">
+                📋
+                <span>Expedientes</span>
+            </a>
+
+
+            <a href="../laboratorio/laboratorio.html">
+                🧪
+                <span>Laboratorio</span>
+            </a>
+
+
+            <a href="../farmacia/farmacia.html">
+                💊
+                <span>Farmacia</span>
+            </a>
+
+
+            <a
+                href="reportes.html"
+                class="active"
+            >
+                📊
+                <span>Reportes</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="../configuracion/configuracion.html">
+                ⚙️
+                <span>Configuración</span>
+            </a>
+
+
+            <a href="#">
+                🚪
+                <span>Cerrar sesión</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Reportes
+                </h1>
+
+                <p>
+                    Estadísticas y reportes generales del sistema
+                </p>
+
+            </div>
+
+
+            <div class="user">
+
+                <div class="user-icon">
+                    👨‍💼
+                </div>
+
+                <div>
+
+                    <strong>
+                        Administrador
+                    </strong>
+
+                    <small>
+                        Administrador
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- FILTROS -->
+
+        <section class="filter-panel">
+
+            <div class="filter-title">
+
+                <div class="filter-icon">
+                    🔎
+                </div>
+
+                <div>
+
+                    <h2>
+                        Filtros de reporte
+                    </h2>
+
+                    <p>
+                        Selecciona el período que deseas consultar
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="filters">
+
+                <div class="filter-group">
+
+                    <label>
+                        Desde
+                    </label>
+
+                    <input
+                        type="date"
+                        id="fechaInicio"
+                        value="2026-08-01"
+                    >
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Hasta
+                    </label>
+
+                    <input
+                        type="date"
+                        id="fechaFin"
+                        value="2026-08-21"
+                    >
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label>
+                        Tipo de reporte
+                    </label>
+
+                    <select id="tipoReporte">
+
+                        <option value="general">
+                            Resumen general
+                        </option>
+
+                        <option value="pacientes">
+                            Pacientes
+                        </option>
+
+                        <option value="citas">
+                            Citas
+                        </option>
+
+                        <option value="laboratorio">
+                            Laboratorio
+                        </option>
+
+                        <option value="farmacia">
+                            Farmacia
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    class="btn-primary"
+                    onclick="generarReporte()"
+                >
+                    📊 Generar reporte
+                </button>
+
+
+                <button
+                    class="btn-print"
+                    onclick="imprimirReporte()"
+                >
+                    🖨️ Imprimir
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- TARJETAS -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    👥
+                </div>
+
+                <div>
+
+                    <strong>
+                        1,248
+                    </strong>
+
+                    <span>
+                        Pacientes registrados
+                    </span>
+
+                    <small class="positive">
+                        ↑ 12.5% este mes
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <strong>
+                        48
+                    </strong>
+
+                    <span>
+                        Médicos activos
+                    </span>
+
+                    <small class="positive">
+                        ↑ 4 nuevos
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    📅
+                </div>
+
+                <div>
+
+                    <strong>
+                        356
+                    </strong>
+
+                    <span>
+                        Citas realizadas
+                    </span>
+
+                    <small class="positive">
+                        ↑ 8.3%
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    🧪
+                </div>
+
+                <div>
+
+                    <strong>
+                        184
+                    </strong>
+
+                    <span>
+                        Estudios realizados
+                    </span>
+
+                    <small class="positive">
+                        ↑ 15.2%
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- GRAFICAS -->
+
+        <section class="charts">
+
+
+            <!-- ACTIVIDAD -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h2>
+                            Actividad mensual
+                        </h2>
+
+                        <p>
+                            Citas y estudios realizados
+                        </p>
+
+                    </div>
+
+                    <span class="chart-badge">
+                        2026
+                    </span>
+
+                </div>
+
+
+                <div class="bar-chart">
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-1"
+                            style="height: 45%;"
+                        >
+                            <span>
+                                120
+                            </span>
+                        </div>
+
+                        <label>
+                            Ene
+                        </label>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-2"
+                            style="height: 58%;"
+                        >
+                            <span>
+                                156
+                            </span>
+                        </div>
+
+                        <label>
+                            Feb
+                        </label>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-3"
+                            style="height: 65%;"
+                        >
+                            <span>
+                                178
+                            </span>
+                        </div>
+
+                        <label>
+                            Mar
+                        </label>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-4"
+                            style="height: 72%;"
+                        >
+                            <span>
+                                195
+                            </span>
+                        </div>
+
+                        <label>
+                            Abr
+                        </label>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-5"
+                            style="height: 78%;"
+                        >
+                            <span>
+                                214
+                            </span>
+                        </div>
+
+                        <label>
+                            May
+                        </label>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-6"
+                            style="height: 88%;"
+                        >
+                            <span>
+                                240
+                            </span>
+                        </div>
+
+                        <label>
+                            Jun
+                        </label>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-7"
+                            style="height: 94%;"
+                        >
+                            <span>
+                                265
+                            </span>
+                        </div>
+
+                        <label>
+                            Jul
+                        </label>
+
+                    </div>
+
+
+                    <div class="bar-group">
+
+                        <div
+                            class="bar bar-8"
+                            style="height: 100%;"
+                        >
+                            <span>
+                                284
+                            </span>
+                        </div>
+
+                        <label>
+                            Ago
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DISTRIBUCIÓN -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h2>
+                            Distribución de pacientes
+                        </h2>
+
+                        <p>
+                            Por grupo de edad
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="donut-container">
+
+                    <div class="donut">
+
+                        <div class="donut-center">
+
+                            <strong>
+                                1,248
+                            </strong>
+
+                            <span>
+                                Total
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="legend">
+
+                        <div>
+
+                            <span class="dot blue-dot"></span>
+
+                            <span>
+                                Adultos
+                            </span>
+
+                            <strong>
+                                48%
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="dot green-dot"></span>
+
+                            <span>
+                                Jóvenes
+                            </span>
+
+                            <strong>
+                                24%
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="dot orange-dot"></span>
+
+                            <span>
+                                Adultos mayores
+                            </span>
+
+                            <strong>
+                                18%
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="dot purple-dot"></span>
+
+                            <span>
+                                Niños
+                            </span>
+
+                            <strong>
+                                10%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- TABLA -->
+
+        <section class="report-panel">
+
+            <div class="report-header">
+
+                <div>
+
+                    <h2>
+                        Resumen de citas
+                    </h2>
+
+                    <p>
+                        Actividad registrada durante el período seleccionado
+                    </p>
+
+                </div>
+
+                <button
+                    class="btn-export"
+                    onclick="exportarReporte()"
+                >
+                    📥 Exportar
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Fecha
+                            </th>
+
+                            <th>
+                                Médico
+                            </th>
+
+                            <th>
+                                Especialidad
+                            </th>
+
+                            <th>
+                                Citas
+                            </th>
+
+                            <th>
+                                Completadas
+                            </th>
+
+                            <th>
+                                Canceladas
+                            </th>
+
+                            <th>
+                                Cumplimiento
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tablaReportes">
+
+                        <tr>
+
+                            <td>
+                                01/08/2026
+                            </td>
+
+                            <td>
+                                Dr. Carlos Ramírez
+                            </td>
+
+                            <td>
+                                Medicina General
+                            </td>
+
+                            <td>
+                                28
+                            </td>
+
+                            <td>
+                                25
+                            </td>
+
+                            <td>
+                                3
+                            </td>
+
+                            <td>
+
+                                <span class="percentage">
+                                    89%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                05/08/2026
+                            </td>
+
+                            <td>
+                                Dra. Ana Gómez
+                            </td>
+
+                            <td>
+                                Pediatría
+                            </td>
+
+                            <td>
+                                32
+                            </td>
+
+                            <td>
+                                30
+                            </td>
+
+                            <td>
+                                2
+                            </td>
+
+                            <td>
+
+                                <span class="percentage">
+                                    94%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                10/08/2026
+                            </td>
+
+                            <td>
+                                Dr. Luis Morales
+                            </td>
+
+                            <td>
+                                Cardiología
+                            </td>
+
+                            <td>
+                                24
+                            </td>
+
+                            <td>
+                                22
+                            </td>
+
+                            <td>
+                                2
+                            </td>
+
+                            <td>
+
+                                <span class="percentage">
+                                    92%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                15/08/2026
+                            </td>
+
+                            <td>
+                                Dra. Sofía Castillo
+                            </td>
+
+                            <td>
+                                Ginecología
+                            </td>
+
+                            <td>
+                                35
+                            </td>
+
+                            <td>
+                                33
+                            </td>
+
+                            <td>
+                                2
+                            </td>
+
+                            <td>
+
+                                <span class="percentage">
+                                    94%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                20/08/2026
+                            </td>
+
+                            <td>
+                                Dr. Carlos Ramírez
+                            </td>
+
+                            <td>
+                                Medicina General
+                            </td>
+
+                            <td>
+                                41
+                            </td>
+
+                            <td>
+                                38
+                            </td>
+
+                            <td>
+                                3
+                            </td>
+
+                            <td>
+
+                                <span class="percentage">
+                                    93%
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- RESUMEN -->
+
+        <section class="summary-cards">
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    💊
+                </div>
+
+                <div>
+
+                    <span>
+                        Medicamentos dispensados
+                    </span>
+
+                    <strong>
+                        1,482
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🧪
+                </div>
+
+                <div>
+
+                    <span>
+                        Estudios de laboratorio
+                    </span>
+
+                    <strong>
+                        184
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    📋
+                </div>
+
+                <div>
+
+                    <span>
+                        Expedientes actualizados
+                    </span>
+
+                    <strong>
+                        327
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ⭐
+                </div>
+
+                <div>
+
+                    <span>
+                        Satisfacción promedio
+                    </span>
+
+                    <strong>
+                        94%
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="reportes.js"></script>
+
+</body>
+
+</html>
