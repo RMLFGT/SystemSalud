@@ -1,0 +1,42 @@
+CREATE INDEX ix_horario_medico_id_medico
+    ON horario_medico (id_medico);
+
+CREATE INDEX ix_cita_id_paciente
+    ON cita (id_paciente);
+
+CREATE INDEX ix_cita_id_medico
+    ON cita (id_medico);
+    
+    /*indice para las llaves foreneas*/
+    
+    CREATE INDEX ix_expediente_id_paciente
+    ON expediente (id_paciente);
+
+CREATE INDEX ix_consulta_id_expediente
+    ON consulta_medica (id_expediente);
+
+CREATE INDEX ix_consulta_id_medico
+    ON consulta_medica (id_medico);
+
+CREATE INDEX ix_consulta_id_tipo
+    ON consulta_medica (id_tipo_consulta);
+    
+   /* -----------------------------*/
+    
+    CREATE INDEX ix_estudio_id_paciente
+    ON estudio_laboratorio (id_paciente);
+
+CREATE INDEX ix_estudio_id_medico
+    ON estudio_laboratorio (id_medico);
+
+CREATE INDEX ix_estudio_id_consulta
+    ON estudio_laboratorio (id_consulta);
+
+CREATE INDEX ix_estudio_id_tipo
+    ON estudio_laboratorio (id_tipo_estudio);
+    
+    
+    
+    
+    CREATE INDEX ix_medicamento_id_categoria
+    ON medicamento (id_categoria);

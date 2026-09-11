@@ -1,759 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Pacientes | SaludSystem</title>
-
-    <link rel="stylesheet" href="pacientes.css">
-
+    <link rel="stylesheet" href="pacientes.css?v=2">
 </head>
-
 <body>
-
-    <!-- MENÚ LATERAL -->
+    <svg class="svg-library" aria-hidden="true">
+        <symbol id="i-hospital" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16M9 21v-5h6v5M9 8h6M12 5v6M7 12h2M15 12h2M3 21h18"/></symbol>
+        <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v11h14V10M9 21v-7h6v7"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+        <symbol id="i-doctor" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2M9 14l3 3 3-3M12 17v4M18 5v4M16 7h4"/></symbol>
+        <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"/></symbol>
+        <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v5h5M9 12h6M9 16h6"/></symbol>
+        <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3M8 15h8"/></symbol>
+        <symbol id="i-pill" viewBox="0 0 24 24"><path d="M8.5 20.5a5 5 0 0 1-7-7l12-12a5 5 0 0 1 7 7zM7 8l9 9"/></symbol>
+        <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20V7M2 20h22"/></symbol>
+        <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 4H4v16h6M14 8l4 4-4 4M8 12h10"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+        <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h12l2 2v16H5zM8 3v6h8V3M8 21v-7h8v7"/></symbol>
+    </svg>
 
     <aside class="sidebar">
-
-        <div class="logo">
-            🏥
-            <span>Salud<span>System</span></span>
-        </div>
-
-        <nav>
-
-            <a href="../index.html">
-                🏠
-                <span>Inicio</span>
-            </a>
-
-            <a href="pacientes.html" class="active">
-                👤
-                <span>Pacientes</span>
-            </a>
-
-            <a href="../medicos/medicos.html">
-                👨‍⚕️
-                <span>Médicos</span>
-            </a>
-
-            <a href="../citas/citas.html">
-                📅
-                <span>Citas</span>
-            </a>
-
-            <a href="../expedientes/expedientes.html">
-                📋
-                <span>Expedientes</span>
-            </a>
-
-            <a href="../laboratorio/laboratorio.html">
-                🧪
-                <span>Laboratorio</span>
-            </a>
-
-            <a href="../farmacia/farmacia.html">
-                💊
-                <span>Farmacia</span>
-            </a>
-
-            <a href="../reportes/reportes.html">
-                📊
-                <span>Reportes</span>
-            </a>
-
+        <div class="logo"><svg class="logo-icon"><use href="#i-hospital"/></svg><span>Salud<span>System</span></span></div>
+        <nav aria-label="Navegación principal">
+            <a href="../index.html"><svg><use href="#i-home"/></svg><span>Inicio</span></a>
+            <a href="pacientes.html" class="active"><svg><use href="#i-user"/></svg><span>Pacientes</span></a>
+            <a href="../medicos/medicos.html"><svg><use href="#i-doctor"/></svg><span>Médicos</span></a>
+            <a href="../citas/citas.html"><svg><use href="#i-calendar"/></svg><span>Citas</span></a>
+            <a href="../expedientes/expedientes.html"><svg><use href="#i-file"/></svg><span>Expedientes</span></a>
+            <a href="../laboratorio/laboratorio.html"><svg><use href="#i-flask"/></svg><span>Laboratorio</span></a>
+            <a href="../farmacia/farmacia.html"><svg><use href="#i-pill"/></svg><span>Farmacia</span></a>
+            <a href="../reportes/reportes.html"><svg><use href="#i-chart"/></svg><span>Reportes</span></a>
         </nav>
-
         <div class="sidebar-bottom">
-
-            <a href="../configuracion/configuracion.html">
-                ⚙️
-                <span>Configuración</span>
-            </a>
-
-            <a href="#">
-                🚪
-                <span>Cerrar sesión</span>
-            </a>
-
+            <a href="../configuracion/configuracion.html"><svg><use href="#i-settings"/></svg><span>Configuración</span></a>
+            <a href="../login/login.html" id="cerrarSesion"><svg><use href="#i-logout"/></svg><span>Cerrar sesión</span></a>
         </div>
-
     </aside>
 
-
-    <!-- CONTENIDO -->
-
     <main class="main">
-
         <header class="topbar">
-
-            <div>
-
-                <h1>Pacientes</h1>
-
-                <p>
-                    Gestión y administración de pacientes
-                </p>
-
-            </div>
-
-            <div class="user">
-
-                <div class="user-icon">
-                    👨‍💼
-                </div>
-
-                <div>
-
-                    <strong>Administrador</strong>
-
-                    <small>
-                        Administrador
-                    </small>
-
-                </div>
-
-            </div>
-
+            <div><span class="eyebrow">Gestión clínica</span><h1>Pacientes</h1><p>Administración y seguimiento de pacientes registrados</p></div>
+            <div class="user"><div class="user-icon"><svg><use href="#i-user"/></svg></div><div><strong>Administrador</strong><small>Administrador</small></div></div>
         </header>
 
-
-        <!-- ACCIONES -->
-
         <section class="actions">
-
             <div class="search">
-
-                <input
-                    type="text"
-                    id="buscarPaciente"
-                    placeholder="Buscar paciente..."
-                >
-
-                <button onclick="buscarPaciente()">
-                    🔍 Buscar
-                </button>
-
+                <svg aria-hidden="true"><use href="#i-search"/></svg>
+                <input type="search" id="buscarPaciente" placeholder="Buscar por nombre, DPI, teléfono o correo" autocomplete="off">
+                <button type="button" onclick="buscarPaciente()">Buscar</button>
             </div>
-
-
-            <button
-                class="btn-primary"
-                onclick="abrirFormulario()"
-            >
-                + Nuevo paciente
-            </button>
-
+            <button type="button" class="btn-primary" onclick="abrirFormulario()"><svg><use href="#i-plus"/></svg>Nuevo paciente</button>
         </section>
-
-
-        <!-- TABLA -->
 
         <section class="panel">
-
             <div class="panel-header">
-
-                <div>
-
-                    <h2>Lista de pacientes</h2>
-
-                    <p>
-                        Pacientes registrados en el sistema
-                    </p>
-
-                </div>
-
-                <span class="total">
-                    5 pacientes
-                </span>
-
+                <div><h2>Lista de pacientes</h2><p>Información registrada en el sistema</p></div>
+                <span class="total">0 pacientes</span>
             </div>
-
-
             <div class="table-container">
-
                 <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>ID</th>
-
-                            <th>Paciente</th>
-
-                            <th>DPI</th>
-
-                            <th>Teléfono</th>
-
-                            <th>Edad</th>
-
-                            <th>Sexo</th>
-
-                            <th>Estado</th>
-
-                            <th>Acciones</th>
-
-                        </tr>
-
-                    </thead>
-
-
+                    <thead><tr><th>ID</th><th>Paciente</th><th>DPI</th><th>Teléfono</th><th>Edad</th><th>Sexo</th><th>Estado</th><th>Acciones</th></tr></thead>
                     <tbody id="tablaPacientes">
-
-                        <tr>
-
-                            <td>001</td>
-
-                            <td>
-
-                                <div class="patient">
-
-                                    <div class="avatar">
-                                        JP
-                                    </div>
-
-                                    <div>
-
-                                        <strong>
-                                            Juan Pérez
-                                        </strong>
-
-                                        <small>
-                                            juan@email.com
-                                        </small>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                1234 56789 0101
-                            </td>
-
-                            <td>
-                                5555-1234
-                            </td>
-
-                            <td>
-                                35
-                            </td>
-
-                            <td>
-                                Masculino
-                            </td>
-
-                            <td>
-                                <span class="status active-status">
-                                    Activo
-                                </span>
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="action edit"
-                                    onclick="editarPaciente(1)"
-                                >
-                                    ✏️
-                                </button>
-
-                                <button
-                                    class="action delete"
-                                    onclick="eliminarPaciente(1)"
-                                >
-                                    🗑️
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td>002</td>
-
-                            <td>
-
-                                <div class="patient">
-
-                                    <div class="avatar">
-                                        MG
-                                    </div>
-
-                                    <div>
-
-                                        <strong>
-                                            María González
-                                        </strong>
-
-                                        <small>
-                                            maria@email.com
-                                        </small>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                2345 67890 0101
-                            </td>
-
-                            <td>
-                                5555-2345
-                            </td>
-
-                            <td>
-                                28
-                            </td>
-
-                            <td>
-                                Femenino
-                            </td>
-
-                            <td>
-
-                                <span class="status active-status">
-                                    Activo
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="action edit"
-                                    onclick="editarPaciente(2)"
-                                >
-                                    ✏️
-                                </button>
-
-                                <button
-                                    class="action delete"
-                                    onclick="eliminarPaciente(2)"
-                                >
-                                    🗑️
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td>003</td>
-
-                            <td>
-
-                                <div class="patient">
-
-                                    <div class="avatar">
-                                        CR
-                                    </div>
-
-                                    <div>
-
-                                        <strong>
-                                            Carlos Ramírez
-                                        </strong>
-
-                                        <small>
-                                            carlos@email.com
-                                        </small>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                3456 78901 0101
-                            </td>
-
-                            <td>
-                                5555-3456
-                            </td>
-
-                            <td>
-                                42
-                            </td>
-
-                            <td>
-                                Masculino
-                            </td>
-
-                            <td>
-
-                                <span class="status active-status">
-                                    Activo
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="action edit"
-                                    onclick="editarPaciente(3)"
-                                >
-                                    ✏️
-                                </button>
-
-                                <button
-                                    class="action delete"
-                                    onclick="eliminarPaciente(3)"
-                                >
-                                    🗑️
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td>004</td>
-
-                            <td>
-
-                                <div class="patient">
-
-                                    <div class="avatar">
-                                        LS
-                                    </div>
-
-                                    <div>
-
-                                        <strong>
-                                            Laura Sánchez
-                                        </strong>
-
-                                        <small>
-                                            laura@email.com
-                                        </small>
-
-                                    </div>
-
-                                </div>
-
-                            </td>
-
-                            <td>
-                                4567 89012 0101
-                            </td>
-
-                            <td>
-                                5555-4567
-                            </td>
-
-                            <td>
-                                31
-                            </td>
-
-                            <td>
-                                Femenino
-                            </td>
-
-                            <td>
-
-                                <span class="status inactive-status">
-                                    Inactivo
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="action edit"
-                                    onclick="editarPaciente(4)"
-                                >
-                                    ✏️
-                                </button>
-
-                                <button
-                                    class="action delete"
-                                    onclick="eliminarPaciente(4)"
-                                >
-                                    🗑️
-                                </button>
-
-                            </td>
-
-                        </tr>
-
+                        <tr><td colspan="8" class="loading-row">Cargando pacientes...</td></tr>
                     </tbody>
-
                 </table>
-
             </div>
-
         </section>
-
     </main>
-    <!-- MODAL NUEVO PACIENTE -->
 
-<div class="modal" id="modalPaciente">
-
-    <div class="modal-content">
-
-        <div class="modal-header">
-
-            <div>
-                <h2 id="tituloFormulario">Nuevo paciente</h2>
-                <p>Ingrese la información del paciente</p>
+    <div class="modal" id="modalPaciente" role="dialog" aria-modal="true" aria-labelledby="tituloFormulario">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div><span class="modal-label">Expediente del paciente</span><h2 id="tituloFormulario">Nuevo paciente</h2><p>Complete la información solicitada</p></div>
+                <button type="button" class="close" onclick="cerrarFormulario()" aria-label="Cerrar"><svg><use href="#i-close"/></svg></button>
             </div>
-
-            <button
-                class="close"
-                onclick="cerrarFormulario()"
-            >
-                ✕
-            </button>
-
+            <form id="formPaciente">
+                <section class="form-section">
+                    <h3>Información personal</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label for="nombre">Nombre</label><input type="text" id="nombre" placeholder="Ej. Juan" required></div>
+                        <div class="form-group"><label for="apellido">Apellido</label><input type="text" id="apellido" placeholder="Ej. Pérez" required></div>
+                        <div class="form-group"><label for="dpi">DPI</label><input type="text" id="dpi" placeholder="0000 00000 0000" required></div>
+                        <div class="form-group"><label for="fechaNacimiento">Fecha de nacimiento</label><input type="date" id="fechaNacimiento" required></div>
+                        <div class="form-group"><label for="sexo">Sexo</label><select id="sexo" required><option value="">Seleccionar</option><option value="Masculino">Masculino</option><option value="Femenino">Femenino</option></select></div>
+                        <div class="form-group"><label for="tipoSangre">Tipo de sangre</label><select id="tipoSangre"><option value="">Seleccionar</option><option>O+</option><option>O-</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option></select></div>
+                    </div>
+                </section>
+                <section class="form-section">
+                    <h3>Información de contacto</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label for="telefono">Teléfono</label><input type="tel" id="telefono" placeholder="5555-5555" required></div>
+                        <div class="form-group"><label for="correo">Correo electrónico</label><input type="email" id="correo" placeholder="correo@email.com"></div>
+                        <div class="form-group full"><label for="direccion">Dirección</label><input type="text" id="direccion" placeholder="Dirección del paciente"></div>
+                    </div>
+                </section>
+                <section class="form-section">
+                    <h3>Contacto de emergencia</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label for="contactoEmergencia">Nombre del contacto</label><input type="text" id="contactoEmergencia" placeholder="Nombre completo"></div>
+                        <div class="form-group"><label for="telefonoEmergencia">Teléfono de emergencia</label><input type="tel" id="telefonoEmergencia" placeholder="5555-5555"></div>
+                    </div>
+                </section>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="cerrarFormulario()">Cancelar</button>
+                    <button type="submit" class="btn-primary"><svg><use href="#i-save"/></svg>Guardar paciente</button>
+                </div>
+            </form>
         </div>
-
-
-        <form id="formPaciente">
-
-            <div class="form-section">
-
-                <h3>Información personal</h3>
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-
-                        <label>Nombre</label>
-
-                        <input
-                            type="text"
-                            id="nombre"
-                            placeholder="Ej. Juan"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Apellido</label>
-
-                        <input
-                            type="text"
-                            id="apellido"
-                            placeholder="Ej. Pérez"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>DPI</label>
-
-                        <input
-                            type="text"
-                            id="dpi"
-                            placeholder="0000 00000 0000"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Fecha de nacimiento</label>
-
-                        <input
-                            type="date"
-                            id="fechaNacimiento"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Sexo</label>
-
-                        <select id="sexo" required>
-
-                            <option value="">
-                                Seleccionar
-                            </option>
-
-                            <option value="Masculino">
-                                Masculino
-                            </option>
-
-                            <option value="Femenino">
-                                Femenino
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Tipo de sangre</label>
-
-                        <select id="tipoSangre">
-
-                            <option value="">
-                                Seleccionar
-                            </option>
-
-                            <option>O+</option>
-                            <option>O-</option>
-                            <option>A+</option>
-                            <option>A-</option>
-                            <option>B+</option>
-                            <option>B-</option>
-                            <option>AB+</option>
-                            <option>AB-</option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-section">
-
-                <h3>Información de contacto</h3>
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-
-                        <label>Teléfono</label>
-
-                        <input
-                            type="tel"
-                            id="telefono"
-                            placeholder="5555-5555"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Correo electrónico</label>
-
-                        <input
-                            type="email"
-                            id="correo"
-                            placeholder="correo@email.com"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label>Dirección</label>
-
-                        <input
-                            type="text"
-                            id="direccion"
-                            placeholder="Dirección del paciente"
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-section">
-
-                <h3>Contacto de emergencia</h3>
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-
-                        <label>Nombre del contacto</label>
-
-                        <input
-                            type="text"
-                            id="contactoEmergencia"
-                            placeholder="Nombre completo"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>Teléfono de emergencia</label>
-
-                        <input
-                            type="tel"
-                            id="telefonoEmergencia"
-                            placeholder="5555-5555"
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="modal-footer">
-
-                <button
-                    type="button"
-                    class="btn-cancel"
-                    onclick="cerrarFormulario()"
-                >
-                    Cancelar
-                </button>
-
-                <button
-                    type="submit"
-                    class="btn-primary"
-                >
-                    💾 Guardar paciente
-                </button>
-
-            </div>
-
-        </form>
-
     </div>
-
-</div>
-
-
-    <script src="pacientes.js"></script>
-
+    <script src="pacientes.js?v=2"></script>
 </body>
-
 </html>

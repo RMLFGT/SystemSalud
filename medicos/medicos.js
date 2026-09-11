@@ -1,615 +1,224 @@
-let medicos = [
-
-    {
-        id: 1,
-        nombre: "Carlos",
-        apellido: "Ramírez",
-        colegiado: "45821",
-        especialidad: "Cardiología",
-        telefono: "5555-1001",
-        correo: "carlos@salud.com",
-        horario: "08:00 AM - 02:00 PM",
-        estado: "Activo"
-    },
-
-    {
-        id: 2,
-        nombre: "Ana",
-        apellido: "Gómez",
-        colegiado: "39215",
-        especialidad: "Pediatría",
-        telefono: "5555-1002",
-        correo: "ana@salud.com",
-        horario: "07:00 AM - 01:00 PM",
-        estado: "Activo"
-    },
-
-    {
-        id: 3,
-        nombre: "Luis",
-        apellido: "Morales",
-        colegiado: "52147",
-        especialidad: "Dermatología",
-        telefono: "5555-1003",
-        correo: "luis@salud.com",
-        horario: "09:00 AM - 03:00 PM",
-        estado: "Activo"
-    },
-
-    {
-        id: 4,
-        nombre: "Sofía",
-        apellido: "Castillo",
-        colegiado: "61324",
-        especialidad: "Ginecología",
-        telefono: "5555-1004",
-        correo: "sofia@salud.com",
-        horario: "02:00 PM - 08:00 PM",
-        estado: "Activo"
-    },
-
-    {
-        id: 5,
-        nombre: "Jorge",
-        apellido: "Méndez",
-        colegiado: "48751",
-        especialidad: "Traumatología",
-        telefono: "5555-1005",
-        correo: "jorge@salud.com",
-        horario: "03:00 PM - 09:00 PM",
-        estado: "Activo"
-    },
-
-    {
-        id: 6,
-        nombre: "Andrea",
-        apellido: "López",
-        colegiado: "70432",
-        especialidad: "Neurología",
-        telefono: "5555-1006",
-        correo: "andrea@salud.com",
-        horario: "09:00 AM - 03:00 PM",
-        estado: "Inactivo"
-    }
-
-];
-
-
+let medicos = [];
 let medicoEditando = null;
+let catalogos = { especialidades: [], clinicas: [] };
 
+async function cargarMedicos() {
+    try {
+        const respuesta = await fetch("../BackEnd/Medicos/listar.php");
+        if (!respuesta.ok) throw new Error("Error HTTP: " + respuesta.status);
+        const resultado = await respuesta.json();
+        if (!resultado.correcto) throw new Error(resultado.mensaje);
+        medicos = resultado.datos.map(medico => ({
+            ...medico,
+            nombre: formatearTexto(medico.nombre),
+            apellido: formatearTexto(medico.apellido),
+            especialidad: formatearTexto(medico.especialidad),
+            estado: formatearTexto(medico.estado),
+            clinica: formatearTexto(medico.clinica),
+            horario: formatearHorario(medico.horaInicio, medico.horaFin)
+        }));
+        renderizarMedicos();
+    } catch (error) {
+        console.error("Error al cargar médicos:", error);
+        alert("No fue posible cargar los médicos desde Oracle.");
+    }
+}
 
-/* =========================
-   MOSTRAR MÉDICOS
-========================= */
+function formatearTexto(texto) {
+    if (!texto) return "";
+    return texto.toLocaleLowerCase("es").replace(/(^|\s)\S/g, letra => letra.toLocaleUpperCase("es"));
+}
+
+function hora12(hora) {
+    if (!hora || !/^\d{2}:\d{2}$/.test(hora)) return hora || "";
+    const [h, minutos] = hora.split(":").map(Number);
+    return `${String(h % 12 || 12).padStart(2, "0")}:${String(minutos).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;
+}
+
+function formatearHorario(inicio, fin) {
+    return inicio && fin ? `${hora12(inicio)} - ${hora12(fin)}` : "Sin horario";
+}
+
+function prepararCampoClinica() {
+    if (document.getElementById("clinica")) return;
+    const grupo = document.createElement("div");
+    grupo.className = "form-group";
+    grupo.innerHTML = `<label>Clínica</label><select id="clinica" required><option value="">Seleccionar</option></select>`;
+    document.getElementById("horario").closest(".form-group").insertAdjacentElement("afterend", grupo);
+}
+
+async function cargarCatalogos() {
+    try {
+        const respuesta = await fetch("../BackEnd/Medicos/catalogos.php");
+        const resultado = await respuesta.json();
+        if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los catálogos");
+        catalogos = resultado.datos;
+        const especialidad = document.getElementById("especialidad");
+        const clinica = document.getElementById("clinica");
+        especialidad.innerHTML = `<option value="">Seleccionar</option>` + catalogos.especialidades.map(e => `<option value="${e.id}">${formatearTexto(e.nombre)}</option>`).join("");
+        clinica.innerHTML = `<option value="">Seleccionar</option>` + catalogos.clinicas.map(c => `<option value="${c.id}">${formatearTexto(c.nombre)} · ${c.codigo}</option>`).join("");
+    } catch (error) {
+        console.error("Error al cargar catálogos:", error);
+        alert(error.message);
+    }
+}
 
 function renderizarMedicos(lista = medicos) {
-
-    const tabla =
-        document.getElementById("tablaMedicos");
-
+    const tabla = document.getElementById("tablaMedicos");
     tabla.innerHTML = "";
-
-
-    lista.forEach(function(medico) {
-
-        const iniciales =
-            medico.nombre.charAt(0) +
-            medico.apellido.charAt(0);
-
-
-        const fila =
-            document.createElement("tr");
-
-
+    if (lista.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="7" class="empty-row">No se encontraron médicos con el criterio indicado.</td></tr>`;
+        actualizarEstadisticas(lista);
+        return;
+    }
+    lista.forEach(medico => {
+        const iniciales = medico.nombre.charAt(0) + medico.apellido.charAt(0);
+        const claseEstado = medico.estado === "Activo" ? "active-status" : "inactive-status";
+        const botonEstado = medico.estado === "Activo"
+            ? `<button class="action delete" onclick="cambiarEstadoMedico(${medico.id}, 'INACTIVO')" title="Desactivar médico" aria-label="Desactivar médico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v5M14 11v5"/></svg></button>`
+            : `<button class="action reactivate" onclick="cambiarEstadoMedico(${medico.id}, 'ACTIVO')" title="Reactivar médico" aria-label="Reactivar médico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8.1 8.1 0 1 0 2 5.3"/><path d="M20 4v7h-7"/><path d="m9 12 2 2 4-4"/></svg></button>`;
+        const fila = document.createElement("tr");
         fila.innerHTML = `
-
+            <td>${String(medico.id).padStart(3, "0")}</td>
+            <td><div class="doctor"><div class="avatar">${iniciales.toUpperCase()}</div><div><strong>Dr. ${medico.nombre} ${medico.apellido}</strong><small>Colegiado: ${medico.colegiado}</small></div></div></td>
+            <td>${medico.especialidad}</td>
+            <td>${medico.telefono || "Sin teléfono"}</td>
+            <td title="${medico.dias} · ${medico.clinica}">${medico.horario}</td>
+            <td><span class="status ${claseEstado}">${medico.estado}</span></td>
             <td>
-                ${String(medico.id).padStart(3, "0")}
-            </td>
-
-
-            <td>
-
-                <div class="doctor">
-
-                    <div class="avatar">
-                        ${iniciales.toUpperCase()}
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            Dr. ${medico.nombre}
-                            ${medico.apellido}
-                        </strong>
-
-                        <small>
-                            Colegiado: ${medico.colegiado}
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </td>
-
-
-            <td>
-                ${medico.especialidad}
-            </td>
-
-
-            <td>
-                ${medico.telefono}
-            </td>
-
-
-            <td>
-                ${medico.horario}
-            </td>
-
-
-            <td>
-
-                <span class="status ${
-                    medico.estado === "Activo"
-                        ? "active-status"
-                        : "inactive-status"
-                }">
-
-                    ${medico.estado}
-
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <button
-                    class="action edit"
-                    onclick="editarMedico(${medico.id})"
-                    title="Editar"
-                >
-                    ✏️
-                </button>
-
-
-                <button
-                    class="action delete"
-                    onclick="eliminarMedico(${medico.id})"
-                    title="Eliminar"
-                >
-                    🗑️
-                </button>
-
-            </td>
-
-        `;
-
-
+                <button class="action edit" onclick="editarMedico(${medico.id})" title="Editar médico" aria-label="Editar médico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></button>
+                ${botonEstado}
+            </td>`;
         tabla.appendChild(fila);
-
     });
-
-
     actualizarEstadisticas(lista);
-
 }
-
-
-/* =========================
-   ESTADÍSTICAS
-========================= */
 
 function actualizarEstadisticas(lista) {
-
-    document.getElementById("totalMedicos")
-        .textContent = medicos.length;
-
-
-    const activos =
-        medicos.filter(
-            medico => medico.estado === "Activo"
-        ).length;
-
-
-    document.getElementById("medicosActivos")
-        .textContent = activos;
-
-
-    const especialidades =
-        new Set(
-            medicos.map(
-                medico => medico.especialidad
-            )
-        );
-
-
-    document.getElementById("especialidades")
-        .textContent = especialidades.size;
-
-
-    document.querySelector(".total")
-        .textContent =
-        `${lista.length} médico${lista.length !== 1 ? "s" : ""}`;
-
+    document.getElementById("totalMedicos").textContent = medicos.length;
+    document.getElementById("medicosActivos").textContent = medicos.filter(m => m.estado === "Activo").length;
+    document.getElementById("especialidades").textContent = new Set(medicos.map(m => m.especialidad)).size;
+    document.querySelector(".total").textContent = `${lista.length} médico${lista.length !== 1 ? "s" : ""}`;
 }
-
-
-/* =========================
-   ABRIR FORMULARIO
-========================= */
-
-function abrirFormulario() {
-
-    medicoEditando = null;
-
-    document.getElementById(
-        "tituloFormulario"
-    ).textContent = "Nuevo médico";
-
-
-    document.getElementById(
-        "formMedico"
-    ).reset();
-
-
-    document.getElementById(
-        "modalMedico"
-    ).classList.add("show");
-
-}
-
-
-/* =========================
-   CERRAR
-========================= */
-
-function cerrarFormulario() {
-
-    document.getElementById(
-        "modalMedico"
-    ).classList.remove("show");
-
-
-    medicoEditando = null;
-
-}
-
-
-/* =========================
-   GUARDAR
-========================= */
-
-document.getElementById("formMedico")
-    .addEventListener(
-        "submit",
-        function(event) {
-
-            event.preventDefault();
-
-
-            const nombre =
-                document.getElementById(
-                    "nombre"
-                ).value.trim();
-
-
-            const apellido =
-                document.getElementById(
-                    "apellido"
-                ).value.trim();
-
-
-            const colegiado =
-                document.getElementById(
-                    "colegiado"
-                ).value.trim();
-
-
-            const especialidad =
-                document.getElementById(
-                    "especialidad"
-                ).value;
-
-
-            const telefono =
-                document.getElementById(
-                    "telefono"
-                ).value.trim();
-
-
-            const correo =
-                document.getElementById(
-                    "correo"
-                ).value.trim();
-
-
-            const horario =
-                document.getElementById(
-                    "horario"
-                ).value;
-
-
-            const estado =
-                document.getElementById(
-                    "estado"
-                ).value;
-
-
-            /* EDITAR */
-
-            if (medicoEditando !== null) {
-
-                const medico =
-                    medicos.find(
-                        m => m.id === medicoEditando
-                    );
-
-
-                medico.nombre = nombre;
-
-                medico.apellido = apellido;
-
-                medico.colegiado = colegiado;
-
-                medico.especialidad =
-                    especialidad;
-
-                medico.telefono =
-                    telefono;
-
-                medico.correo =
-                    correo;
-
-                medico.horario =
-                    horario;
-
-                medico.estado =
-                    estado;
-
-
-                alert(
-                    "Médico actualizado correctamente."
-                );
-
-            }
-
-
-            /* NUEVO */
-
-            else {
-
-                const nuevoMedico = {
-
-                    id:
-                        medicos.length > 0
-                            ? Math.max(
-                                ...medicos.map(
-                                    m => m.id
-                                )
-                            ) + 1
-                            : 1,
-
-                    nombre:
-                        nombre,
-
-                    apellido:
-                        apellido,
-
-                    colegiado:
-                        colegiado,
-
-                    especialidad:
-                        especialidad,
-
-                    telefono:
-                        telefono,
-
-                    correo:
-                        correo,
-
-                    horario:
-                        horario,
-
-                    estado:
-                        estado
-
-                };
-
-
-                medicos.push(
-                    nuevoMedico
-                );
-
-
-                alert(
-                    "Médico registrado correctamente."
-                );
-
-            }
-
-
-            renderizarMedicos();
-
-            cerrarFormulario();
-
-        }
-    );
-
-
-/* =========================
-   BUSCAR
-========================= */
 
 function buscarMedico() {
-
-    const texto =
-        document.getElementById(
-            "buscarMedico"
-        ).value
-        .toLowerCase()
-        .trim();
-
-
-    const resultados =
-        medicos.filter(function(medico) {
-
-            const contenido = `
-
-                ${medico.nombre}
-
-                ${medico.apellido}
-
-                ${medico.especialidad}
-
-                ${medico.colegiado}
-
-                ${medico.telefono}
-
-            `.toLowerCase();
-
-
-            return contenido.includes(
-                texto
-            );
-
-        });
-
-
-    renderizarMedicos(
-        resultados
-    );
-
+    const texto = document.getElementById("buscarMedico").value.toLowerCase().trim();
+    const resultados = medicos.filter(m => `${m.nombre} ${m.apellido} ${m.especialidad} ${m.colegiado} ${m.telefono} ${m.clinica}`.toLowerCase().includes(texto));
+    renderizarMedicos(resultados);
 }
 
+function abrirFormulario() {
+    medicoEditando = null;
+    document.getElementById("tituloFormulario").textContent = "Nuevo médico";
+    document.getElementById("formMedico").reset();
+    document.getElementById("modalMedico").classList.add("show");
+    document.body.classList.add("modal-open");
+    setTimeout(() => document.getElementById("nombre").focus(), 50);
+}
 
-/* =========================
-   EDITAR
-========================= */
+function cerrarFormulario() {
+    document.getElementById("modalMedico").classList.remove("show");
+    document.body.classList.remove("modal-open");
+    medicoEditando = null;
+}
 
 function editarMedico(id) {
-
-    const medico =
-        medicos.find(
-            m => m.id === id
-        );
-
-
+    const medico = medicos.find(m => m.id === id);
     if (!medico) return;
-
-
     medicoEditando = id;
-
-
-    document.getElementById(
-        "tituloFormulario"
-    ).textContent = "Editar médico";
-
-
-    document.getElementById("nombre").value =
-        medico.nombre;
-
-
-    document.getElementById("apellido").value =
-        medico.apellido;
-
-
-    document.getElementById("colegiado").value =
-        medico.colegiado;
-
-
-    document.getElementById("especialidad").value =
-        medico.especialidad;
-
-
-    document.getElementById("telefono").value =
-        medico.telefono;
-
-
-    document.getElementById("correo").value =
-        medico.correo;
-
-
-    document.getElementById("horario").value =
-        medico.horario;
-
-
-    document.getElementById("estado").value =
-        medico.estado;
-
-
-    document.getElementById(
-        "modalMedico"
-    ).classList.add("show");
-
+    document.getElementById("tituloFormulario").textContent = "Editar médico";
+    document.getElementById("nombre").value = medico.nombre;
+    document.getElementById("apellido").value = medico.apellido;
+    document.getElementById("colegiado").value = medico.colegiado;
+    document.getElementById("especialidad").value = medico.idEspecialidad;
+    document.getElementById("telefono").value = medico.telefono || "";
+    document.getElementById("correo").value = medico.correo || "";
+    document.getElementById("horario").value = medico.horario;
+    document.getElementById("clinica").value = medico.idClinica || "";
+    document.getElementById("estado").value = medico.estado;
+    document.getElementById("modalMedico").classList.add("show");
+    document.body.classList.add("modal-open");
 }
 
+function avisarSiguientePaso() {
+    alert("Primero comprobaremos el listado. Después conectaremos esta acción con Oracle.");
+}
 
-/* =========================
-   ELIMINAR
-========================= */
-
-function eliminarMedico(id) {
-
-    const medico =
-        medicos.find(
-            m => m.id === id
-        );
-
-
+async function cambiarEstadoMedico(id, estado) {
+    const medico = medicos.find(m => m.id === id);
     if (!medico) return;
-
-
-    const confirmar =
-        confirm(
-            `¿Deseas eliminar al Dr. ${medico.nombre} ${medico.apellido}?`
-        );
-
-
-    if (!confirmar) return;
-
-
-    medicos =
-        medicos.filter(
-            m => m.id !== id
-        );
-
-
-    renderizarMedicos();
-
-
-    alert(
-        "Médico eliminado correctamente."
-    );
-
+    const accion = estado === "ACTIVO" ? "reactivar" : "desactivar";
+    if (!confirm(`¿Deseas ${accion} al Dr. ${medico.nombre} ${medico.apellido}?`)) return;
+    try {
+        const respuesta = await fetch("../BackEnd/Medicos/cambiar_estado.php", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, estado })
+        });
+        const resultado = await respuesta.json();
+        if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || `No fue posible ${accion} al médico`);
+        alert(resultado.mensaje);
+        await cargarMedicos();
+    } catch (error) {
+        console.error(`Error al ${accion} médico:`, error);
+        alert(error.message);
+    }
 }
 
-
-/* =========================
-   CERRAR AL HACER CLICK
-   FUERA DEL MODAL
-========================= */
-
-document.getElementById(
-    "modalMedico"
-).addEventListener(
-    "click",
-    function(event) {
-
-        if (event.target === this) {
-
-            cerrarFormulario();
-
-        }
-
+document.getElementById("formMedico").addEventListener("submit", async event => {
+    event.preventDefault();
+    const horario = document.getElementById("horario").value;
+    const [horaInicio, horaFin] = horario.split(" - ");
+    const datos = {
+        nombre: document.getElementById("nombre").value.trim(),
+        apellido: document.getElementById("apellido").value.trim(),
+        colegiado: document.getElementById("colegiado").value.trim(),
+        idEspecialidad: Number(document.getElementById("especialidad").value),
+        telefono: document.getElementById("telefono").value.trim(),
+        correo: document.getElementById("correo").value.trim(),
+        idClinica: Number(document.getElementById("clinica").value),
+        horaInicio,
+        horaFin,
+        estado: document.getElementById("estado").value,
+        id: medicoEditando
+    };
+    try {
+        const esEdicion = medicoEditando !== null;
+        const respuesta = await fetch(esEdicion ? "../BackEnd/Medicos/actualizar.php" : "../BackEnd/Medicos/guardar.php", {
+            method: esEdicion ? "PUT" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datos)
+        });
+        const resultado = await respuesta.json();
+        if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible guardar el médico");
+        alert(resultado.mensaje);
+        cerrarFormulario();
+        await cargarMedicos();
+    } catch (error) {
+        console.error("Error al guardar médico:", error);
+        alert(error.message);
     }
-);
+});
 
+document.getElementById("modalMedico").addEventListener("click", function(event) {
+    if (event.target === this) cerrarFormulario();
+});
 
-/* =========================
-   CARGAR DATOS
-========================= */
+document.getElementById("buscarMedico").addEventListener("input", buscarMedico);
 
-renderizarMedicos();
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape" &&
+        document.getElementById("modalMedico").classList.contains("show")) {
+        cerrarFormulario();
+    }
+});
+
+document.getElementById("cerrarSesion").addEventListener("click", event => {
+    event.preventDefault();
+    if (confirm("¿Seguro que deseas cerrar sesión?")) {
+        window.location.href = "../login/login.html";
+    }
+});
+
+prepararCampoClinica();
+Promise.all([cargarCatalogos(), cargarMedicos()]);

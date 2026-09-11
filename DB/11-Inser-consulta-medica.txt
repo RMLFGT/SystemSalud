@@ -1,0 +1,135 @@
+INSERT INTO consulta_medica (
+    id_expediente,
+    id_medico,
+    id_tipo_consulta,
+    fecha_consulta,
+    diagnostico,
+    sintomas,
+    tratamiento,
+    observaciones,
+    presion_sistolica,
+    presion_diastolica,
+    frecuencia_cardiaca,
+    temperatura,
+    peso
+)
+SELECT
+    e.id_expediente,
+    m.id_medico,
+    tc.id_tipo_consulta,
+    TIMESTAMP '2026-08-20 08:30:00',
+    'HIPERTENSION ARTERIAL',
+    'Dolor de cabeza ocasional',
+    'Control de presion arterial y dieta baja en sodio',
+    'Paciente estable',
+    130, 85, 74, 36.5, 78
+FROM expediente e
+JOIN paciente p
+    ON p.id_paciente = e.id_paciente
+CROSS JOIN medico m
+CROSS JOIN tipo_consulta tc
+WHERE p.dpi = '1234567890101'
+  AND m.numero_colegiado = '45821'
+  AND tc.nombre = 'CONTROL';
+
+INSERT INTO consulta_medica (
+    id_expediente,
+    id_medico,
+    id_tipo_consulta,
+    fecha_consulta,
+    diagnostico,
+    sintomas,
+    tratamiento,
+    observaciones,
+    presion_sistolica,
+    presion_diastolica,
+    frecuencia_cardiaca,
+    temperatura,
+    peso
+)
+SELECT
+    e.id_expediente,
+    m.id_medico,
+    tc.id_tipo_consulta,
+    TIMESTAMP '2026-08-19 09:00:00',
+    'GRIPE COMUN',
+    'Fiebre, tos y congestion',
+    'Reposo e hidratacion',
+    'Control en una semana',
+    118, 78, 80, 37.4, 62
+FROM expediente e
+JOIN paciente p
+    ON p.id_paciente = e.id_paciente
+CROSS JOIN medico m
+CROSS JOIN tipo_consulta tc
+WHERE p.dpi = '2345678900101'
+  AND m.numero_colegiado = '39215'
+  AND tc.nombre = 'CONSULTA GENERAL';
+
+INSERT INTO consulta_medica (
+    id_expediente,
+    id_medico,
+    id_tipo_consulta,
+    fecha_consulta,
+    diagnostico,
+    sintomas,
+    tratamiento,
+    observaciones,
+    presion_sistolica,
+    presion_diastolica,
+    frecuencia_cardiaca,
+    temperatura,
+    peso
+)
+SELECT
+    e.id_expediente,
+    m.id_medico,
+    tc.id_tipo_consulta,
+    TIMESTAMP '2026-08-17 10:00:00',
+    'DERMATITIS',
+    'Irritacion y enrojecimiento',
+    'Crema topica durante 10 dias',
+    'Mejoria considerable',
+    120, 80, 72, 36.6, 75
+FROM expediente e
+JOIN paciente p
+    ON p.id_paciente = e.id_paciente
+CROSS JOIN medico m
+CROSS JOIN tipo_consulta tc
+WHERE p.dpi = '3456789010101'
+  AND m.numero_colegiado = '52147'
+  AND tc.nombre = 'CONSULTA DE SEGUIMIENTO';
+
+INSERT INTO consulta_medica (
+    id_expediente,
+    id_medico,
+    id_tipo_consulta,
+    fecha_consulta,
+    diagnostico,
+    sintomas,
+    tratamiento,
+    observaciones,
+    presion_sistolica,
+    presion_diastolica,
+    frecuencia_cardiaca,
+    temperatura,
+    peso
+)
+SELECT
+    e.id_expediente,
+    m.id_medico,
+    tc.id_tipo_consulta,
+    TIMESTAMP '2026-08-15 14:30:00',
+    'ANEMIA',
+    'Cansancio y debilidad',
+    'Suplementacion y alimentacion balanceada',
+    'Solicitar examen de seguimiento',
+    110, 70, 76, 36.4, 58
+FROM expediente e
+JOIN paciente p
+    ON p.id_paciente = e.id_paciente
+CROSS JOIN medico m
+CROSS JOIN tipo_consulta tc
+WHERE p.dpi = '4567890120101'
+  AND m.numero_colegiado = '61324'
+  AND tc.nombre = 'CONTROL';

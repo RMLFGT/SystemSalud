@@ -1,0 +1,121 @@
+/* =====================================================
+   INSERTAR MÉDICOS
+   ===================================================== */
+
+INSERT INTO medico (
+    id_especialidad,
+    numero_colegiado,
+    nombre,
+    apellido,
+    telefono,
+    correo
+)
+SELECT
+    id_especialidad,
+    '45821',
+    'CARLOS',
+    'RAMIREZ',
+    '5555-1001',
+    'carlos@salud.com'
+FROM especialidad
+WHERE nombre = 'CARDIOLOGIA';
+
+
+INSERT INTO medico (
+    id_especialidad,
+    numero_colegiado,
+    nombre,
+    apellido,
+    telefono,
+    correo
+)
+SELECT
+    id_especialidad,
+    '39215',
+    'ANA',
+    'GOMEZ',
+    '5555-1002',
+    'ana@salud.com'
+FROM especialidad
+WHERE nombre = 'PEDIATRIA';
+
+
+INSERT INTO medico (
+    id_especialidad,
+    numero_colegiado,
+    nombre,
+    apellido,
+    telefono,
+    correo
+)
+SELECT
+    id_especialidad,
+    '52147',
+    'LUIS',
+    'MORALES',
+    '5555-1003',
+    'luis@salud.com'
+FROM especialidad
+WHERE nombre = 'DERMATOLOGIA';
+
+
+INSERT INTO medico (
+    id_especialidad,
+    numero_colegiado,
+    nombre,
+    apellido,
+    telefono,
+    correo
+)
+SELECT
+    id_especialidad,
+    '61324',
+    'SOFIA',
+    'CASTILLO',
+    '5555-1004',
+    'sofia@salud.com'
+FROM especialidad
+WHERE nombre = 'GINECOLOGIA';
+
+
+INSERT INTO medico (
+    id_especialidad,
+    numero_colegiado,
+    nombre,
+    apellido,
+    telefono,
+    correo
+)
+SELECT
+    id_especialidad,
+    '48751',
+    'JORGE',
+    'MENDEZ',
+    '5555-1005',
+    'jorge@salud.com'
+FROM especialidad
+WHERE nombre = 'TRAUMATOLOGIA';
+
+
+INSERT INTO medico (
+    id_especialidad,
+    numero_colegiado,
+    nombre,
+    apellido,
+    telefono,
+    correo,
+    estado
+)
+SELECT
+    id_especialidad,
+    '70432',
+    'ANDREA',
+    'LOPEZ',
+    '5555-1006',
+    'andrea@salud.com',
+    'INACTIVO'
+FROM especialidad
+WHERE nombre = 'NEUROLOGIA';
+
+
+COMMIT;

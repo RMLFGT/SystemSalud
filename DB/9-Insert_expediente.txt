@@ -1,0 +1,15 @@
+INSERT INTO expediente (
+    id_paciente,
+    observaciones_generales
+)
+SELECT
+    p.id_paciente,
+    'Expediente creado para historial clinico'
+FROM paciente p
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM expediente e
+    WHERE e.id_paciente = p.id_paciente
+);
+
+COMMIT;

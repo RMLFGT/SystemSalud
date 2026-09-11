@@ -1,0 +1,51 @@
+INSERT INTO rol (nombre, descripcion)
+VALUES (
+    'ADMINISTRADOR',
+    'Administración general del sistema'
+);
+
+INSERT INTO rol (nombre, descripcion)
+VALUES (
+    'MEDICO',
+    'Personal médico autorizado'
+);
+
+INSERT INTO rol (nombre, descripcion)
+VALUES (
+    'LABORATORIO',
+    'Personal encargado de estudios clínicos'
+);
+
+INSERT INTO rol (nombre, descripcion)
+VALUES (
+    'FARMACIA',
+    'Personal encargado de medicamentos e inventario'
+);
+
+COMMIT;
+
+INSERT INTO especialidad (nombre)
+VALUES ('MEDICINA GENERAL');
+
+INSERT INTO especialidad (nombre)
+VALUES ('CARDIOLOGIA');
+
+INSERT INTO especialidad (nombre)
+VALUES ('PEDIATRIA');
+
+INSERT INTO especialidad (nombre)
+VALUES ('DERMATOLOGIA');
+
+INSERT INTO especialidad (nombre)
+VALUES ('GINECOLOGIA');
+
+INSERT INTO especialidad (nombre)
+VALUES ('TRAUMATOLOGIA');
+
+INSERT INTO especialidad (nombre)
+VALUES ('NEUROLOGIA');
+
+INSERT INTO especialidad (nombre)
+VALUES ('OFTALMOLOGIA');
+
+COMMIT;

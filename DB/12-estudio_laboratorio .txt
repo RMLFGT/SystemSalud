@@ -1,0 +1,127 @@
+INSERT INTO estudio_laboratorio (
+    id_paciente,
+    id_medico,
+    id_consulta,
+    id_tipo_estudio,
+    fecha_solicitud,
+    fecha_resultado,
+    resultado,
+    observaciones,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    cm.id_consulta,
+    te.id_tipo_estudio,
+    TIMESTAMP '2026-08-20 09:00:00',
+    TIMESTAMP '2026-08-20 15:00:00',
+    'Hemoglobina: 14.2 g/dL. Valores dentro del rango normal.',
+    'Sin alteraciones significativas',
+    'COMPLETADO'
+FROM paciente p
+JOIN expediente e
+    ON e.id_paciente = p.id_paciente
+JOIN consulta_medica cm
+    ON cm.id_expediente = e.id_expediente
+JOIN medico m
+    ON m.id_medico = cm.id_medico
+CROSS JOIN tipo_estudio te
+WHERE p.dpi = '1234567890101'
+  AND te.nombre = 'HEMOGRAMA';
+
+INSERT INTO estudio_laboratorio (
+    id_paciente,
+    id_medico,
+    id_consulta,
+    id_tipo_estudio,
+    fecha_solicitud,
+    fecha_resultado,
+    resultado,
+    observaciones,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    cm.id_consulta,
+    te.id_tipo_estudio,
+    TIMESTAMP '2026-08-19 09:30:00',
+    TIMESTAMP '2026-08-19 14:00:00',
+    'Glucosa en ayunas: 92 mg/dL.',
+    'Resultado dentro de los parametros normales',
+    'COMPLETADO'
+FROM paciente p
+JOIN expediente e
+    ON e.id_paciente = p.id_paciente
+JOIN consulta_medica cm
+    ON cm.id_expediente = e.id_expediente
+JOIN medico m
+    ON m.id_medico = cm.id_medico
+CROSS JOIN tipo_estudio te
+WHERE p.dpi = '2345678900101'
+  AND te.nombre = 'GLUCOSA';
+
+INSERT INTO estudio_laboratorio (
+    id_paciente,
+    id_medico,
+    id_consulta,
+    id_tipo_estudio,
+    fecha_solicitud,
+    resultado,
+    observaciones,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    cm.id_consulta,
+    te.id_tipo_estudio,
+    TIMESTAMP '2026-08-18 08:00:00',
+    NULL,
+    'Muestra pendiente de procesamiento',
+    'PENDIENTE'
+FROM paciente p
+JOIN expediente e
+    ON e.id_paciente = p.id_paciente
+JOIN consulta_medica cm
+    ON cm.id_expediente = e.id_expediente
+JOIN medico m
+    ON m.id_medico = cm.id_medico
+CROSS JOIN tipo_estudio te
+WHERE p.dpi = '3456789010101'
+  AND te.nombre = 'PERFIL LIPIDICO';
+
+INSERT INTO estudio_laboratorio (
+    id_paciente,
+    id_medico,
+    id_consulta,
+    id_tipo_estudio,
+    fecha_solicitud,
+    fecha_resultado,
+    resultado,
+    observaciones,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    cm.id_consulta,
+    te.id_tipo_estudio,
+    TIMESTAMP '2026-08-17 08:00:00',
+    TIMESTAMP '2026-08-17 13:00:00',
+    'Sin presencia de proteinas ni glucosa.',
+    'Resultado dentro de los parametros normales',
+    'COMPLETADO'
+FROM paciente p
+JOIN expediente e
+    ON e.id_paciente = p.id_paciente
+JOIN consulta_medica cm
+    ON cm.id_expediente = e.id_expediente
+JOIN medico m
+    ON m.id_medico = cm.id_medico
+CROSS JOIN tipo_estudio te
+WHERE p.dpi = '4567890120101'
+  AND te.nombre = 'EXAMEN DE ORINA';
+
+COMMIT;

@@ -1,0 +1,117 @@
+INSERT INTO clinica (
+    codigo_clinica,
+    nombre,
+    ubicacion,
+    descripcion
+)
+VALUES (
+    '1',
+    'CLINICA 1',
+    'PRIMER NIVEL',
+    'Clinica de consulta externa'
+);
+
+INSERT INTO clinica (
+    codigo_clinica,
+    nombre,
+    ubicacion,
+    descripcion
+)
+VALUES (
+    '2',
+    'CLINICA 2',
+    'PRIMER NIVEL',
+    'Clinica de consulta externa'
+);
+
+INSERT INTO clinica (
+    codigo_clinica,
+    nombre,
+    ubicacion,
+    descripcion
+)
+VALUES (
+    '3',
+    'CLINICA 3',
+    'PRIMER NIVEL',
+    'Clinica de consulta externa'
+);
+
+INSERT INTO clinica (
+    codigo_clinica,
+    nombre,
+    ubicacion,
+    descripcion
+)
+VALUES (
+    '4',
+    'CLINICA 4',
+    'SEGUNDO NIVEL',
+    'Clinica de especialidades'
+);
+
+INSERT INTO clinica (
+    codigo_clinica,
+    nombre,
+    ubicacion,
+    descripcion
+)
+VALUES (
+    '5',
+    'CLINICA 5',
+    'SEGUNDO NIVEL',
+    'Clinica de especialidades'
+);
+
+INSERT INTO clinica (
+    codigo_clinica,
+    nombre,
+    ubicacion,
+    descripcion
+)
+VALUES (
+    '6',
+    'CLINICA 6',
+    'SEGUNDO NIVEL',
+    'Clinica de especialidades'
+);
+
+COMMIT;
+
+INSERT INTO tipo_consulta (
+    nombre,
+    descripcion
+)
+VALUES (
+    'CONSULTA GENERAL',
+    'Primera evaluacion o consulta general'
+);
+
+INSERT INTO tipo_consulta (
+    nombre,
+    descripcion
+)
+VALUES (
+    'CONSULTA DE SEGUIMIENTO',
+    'Seguimiento de una consulta anterior'
+);
+
+INSERT INTO tipo_consulta (
+    nombre,
+    descripcion
+)
+VALUES (
+    'EMERGENCIA',
+    'Atencion medica no programada'
+);
+
+INSERT INTO tipo_consulta (
+    nombre,
+    descripcion
+)
+VALUES (
+    'CONTROL',
+    'Control periodico del paciente'
+);
+
+COMMIT;

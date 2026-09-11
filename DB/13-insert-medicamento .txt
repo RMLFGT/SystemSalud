@@ -1,0 +1,142 @@
+/* 1. Paracetamol */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'PARACETAMOL', 'CAJA X 20 TABLETAS', 'GENFAR',
+    250, 30, 18.50, DATE '2027-05-20',
+    'Analgesico y antipiretico'
+FROM categoria_medicamento
+WHERE nombre = 'ANALGESICOS';
+
+
+/* 2. Amoxicilina */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'AMOXICILINA', 'CAJA X 21 CAPSULAS', 'MK',
+    180, 30, 45.00, DATE '2027-02-15',
+    'Antibiotico de amplio espectro'
+FROM categoria_medicamento
+WHERE nombre = 'ANTIBIOTICOS';
+
+
+/* 3. Ibuprofeno */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'IBUPROFENO', 'CAJA X 20 TABLETAS', 'PFIZER',
+    15, 30, 25.00, DATE '2026-12-10',
+    'Antiinflamatorio y analgesico'
+FROM categoria_medicamento
+WHERE nombre = 'ANTIINFLAMATORIOS';
+
+
+/* 4. Loratadina */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'LORATADINA', 'CAJA X 10 TABLETAS', 'BAYER',
+    95, 20, 22.50, DATE '2027-08-11',
+    'Tratamiento de sintomas alergicos'
+FROM categoria_medicamento
+WHERE nombre = 'ANTIHISTAMINICOS';
+
+
+/* 5. Omeprazol */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'OMEPRAZOL', 'CAJA X 14 CAPSULAS', 'MEDIFARMA',
+    220, 30, 32.00, DATE '2027-03-25',
+    'Protector gastrico'
+FROM categoria_medicamento
+WHERE nombre = 'GASTROINTESTINALES';
+
+
+/* 6. Vitamina C */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'VITAMINA C', 'FRASCO X 100 TABLETAS', 'NATURES',
+    40, 50, 38.00, DATE '2027-11-01',
+    'Suplemento de vitamina C'
+FROM categoria_medicamento
+WHERE nombre = 'VITAMINAS';
+
+
+/* 7. Losartán */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'LOSARTAN', 'CAJA X 30 TABLETAS', 'NOVARTIS',
+    300, 40, 55.00, DATE '2028-01-15',
+    'Medicamento para el control de la presion arterial'
+FROM categoria_medicamento
+WHERE nombre = 'CARDIOVASCULARES';
+
+
+/* 8. Metformina */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'METFORMINA', 'CAJA X 30 TABLETAS', 'MERCK',
+    275, 40, 42.00, DATE '2027-07-20',
+    'Medicamento para controlar la glucosa'
+FROM categoria_medicamento
+WHERE nombre = 'ANTIDIABETICOS';
+
+
+/* 9. Diclofenaco */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'DICLOFENACO', 'CAJA X 20 TABLETAS', 'VOLTAREN',
+    12, 25, 29.50, DATE '2026-11-30',
+    'Antiinflamatorio y analgesico'
+FROM categoria_medicamento
+WHERE nombre = 'ANTIINFLAMATORIOS';
+
+
+/* 10. Salbutamol */
+
+INSERT INTO medicamento (
+    id_categoria, nombre, presentacion, laboratorio_fabricante,
+    stock, stock_minimo, precio, fecha_vencimiento, descripcion
+)
+SELECT
+    id_categoria, 'SALBUTAMOL', 'INHALADOR', 'GSK',
+    8, 15, 65.00, DATE '2027-06-12',
+    'Broncodilatador'
+FROM categoria_medicamento
+WHERE nombre = 'RESPIRATORIOS';
+
+COMMIT;
+
+ 

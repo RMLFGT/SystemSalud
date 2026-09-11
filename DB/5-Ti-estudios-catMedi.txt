@@ -1,0 +1,53 @@
+INSERT INTO tipo_estudio (nombre)
+VALUES ('HEMOGRAMA');
+
+INSERT INTO tipo_estudio (nombre)
+VALUES ('GLUCOSA');
+
+INSERT INTO tipo_estudio (nombre)
+VALUES ('PERFIL LIPIDICO');
+
+INSERT INTO tipo_estudio (nombre)
+VALUES ('EXAMEN DE ORINA');
+
+INSERT INTO tipo_estudio (nombre)
+VALUES ('PRUEBA DE EMBARAZO');
+
+INSERT INTO tipo_estudio (nombre)
+VALUES ('QUIMICA SANGUINEA');
+
+INSERT INTO tipo_estudio (nombre)
+VALUES ('PRUEBAS HEPATICAS');
+
+COMMIT;
+
+
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('ANALGESICOS');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('ANTIBIOTICOS');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('ANTIINFLAMATORIOS');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('ANTIHISTAMINICOS');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('VITAMINAS');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('CARDIOVASCULARES');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('GASTROINTESTINALES');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('ANTIDIABETICOS');
+
+INSERT INTO categoria_medicamento (nombre)
+VALUES ('RESPIRATORIOS');
+
+COMMIT;

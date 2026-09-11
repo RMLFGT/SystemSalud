@@ -1,0 +1,118 @@
+/* =====================================================
+   INSERTAR PACIENTES DE PRUEBA
+   ===================================================== */
+
+INSERT INTO paciente (
+    dpi,
+    nombre,
+    apellido,
+    fecha_nacimiento,
+    sexo,
+    tipo_sangre,
+    telefono,
+    correo,
+    direccion,
+    contacto_emergencia,
+    telefono_emergencia
+)
+VALUES (
+    '1234567890101',
+    'JUAN',
+    'PEREZ',
+    DATE '1991-05-15',
+    'MASCULINO',
+    'O+',
+    '5555-1234',
+    'juan@email.com',
+    'CIUDAD DE GUATEMALA',
+    'PEDRO PEREZ',
+    '5555-1111'
+);
+
+
+INSERT INTO paciente (
+    dpi,
+    nombre,
+    apellido,
+    fecha_nacimiento,
+    sexo,
+    tipo_sangre,
+    telefono,
+    correo,
+    direccion,
+    contacto_emergencia,
+    telefono_emergencia
+)
+VALUES (
+    '2345678900101',
+    'MARIA',
+    'GONZALEZ',
+    DATE '1998-02-20',
+    'FEMENINO',
+    'A+',
+    '5555-2345',
+    'maria@email.com',
+    'MIXCO',
+    'ANA GONZALEZ',
+    '5555-2222'
+);
+
+
+INSERT INTO paciente (
+    dpi,
+    nombre,
+    apellido,
+    fecha_nacimiento,
+    sexo,
+    tipo_sangre,
+    telefono,
+    correo,
+    direccion,
+    contacto_emergencia,
+    telefono_emergencia
+)
+VALUES (
+    '3456789010101',
+    'CARLOS',
+    'RAMIREZ',
+    DATE '1984-01-10',
+    'MASCULINO',
+    'B+',
+    '5555-3456',
+    'carlos@email.com',
+    'VILLA NUEVA',
+    'LUIS RAMIREZ',
+    '5555-3333'
+);
+
+
+INSERT INTO paciente (
+    dpi,
+    nombre,
+    apellido,
+    fecha_nacimiento,
+    sexo,
+    tipo_sangre,
+    telefono,
+    correo,
+    direccion,
+    contacto_emergencia,
+    telefono_emergencia,
+    estado
+)
+VALUES (
+    '4567890120101',
+    'LAURA',
+    'SANCHEZ',
+    DATE '1995-08-12',
+    'FEMENINO',
+    'O-',
+    '5555-4567',
+    'laura@email.com',
+    'AMATITLAN',
+    'SOFIA SANCHEZ',
+    '5555-4444',
+    'INACTIVO'
+);
+
+COMMIT;

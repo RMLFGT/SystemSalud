@@ -1,0 +1,138 @@
+INSERT INTO horario_medico (
+    id_medico, id_clinica, dia_semana, hora_inicio, hora_fin
+)
+SELECT
+    m.id_medico,
+    c.id_clinica,
+    d.dia_semana,
+    '08:00',
+    '14:00'
+FROM medico m
+CROSS JOIN clinica c
+CROSS JOIN (
+    SELECT 'LUNES' dia_semana FROM dual
+    UNION ALL SELECT 'MARTES' FROM dual
+    UNION ALL SELECT 'MIERCOLES' FROM dual
+    UNION ALL SELECT 'JUEVES' FROM dual
+    UNION ALL SELECT 'VIERNES' FROM dual
+) d
+WHERE m.numero_colegiado = '45821'
+AND c.codigo_clinica = '1';
+
+INSERT INTO horario_medico (
+    id_medico, id_clinica, dia_semana, hora_inicio, hora_fin
+)
+SELECT
+    m.id_medico,
+    c.id_clinica,
+    d.dia_semana,
+    '07:00',
+    '13:00'
+FROM medico m
+CROSS JOIN clinica c
+CROSS JOIN (
+    SELECT 'LUNES' dia_semana FROM dual
+    UNION ALL SELECT 'MARTES' FROM dual
+    UNION ALL SELECT 'MIERCOLES' FROM dual
+    UNION ALL SELECT 'JUEVES' FROM dual
+    UNION ALL SELECT 'VIERNES' FROM dual
+) d
+WHERE m.numero_colegiado = '39215'
+AND c.codigo_clinica = '2';
+
+
+INSERT INTO horario_medico (
+    id_medico, id_clinica, dia_semana, hora_inicio, hora_fin
+)
+SELECT
+    m.id_medico,
+    c.id_clinica,
+    d.dia_semana,
+    '09:00',
+    '15:00'
+FROM medico m
+CROSS JOIN clinica c
+CROSS JOIN (
+    SELECT 'LUNES' dia_semana FROM dual
+    UNION ALL SELECT 'MARTES' FROM dual
+    UNION ALL SELECT 'MIERCOLES' FROM dual
+    UNION ALL SELECT 'JUEVES' FROM dual
+    UNION ALL SELECT 'VIERNES' FROM dual
+) d
+WHERE m.numero_colegiado = '52147'
+AND c.codigo_clinica = '3';
+
+
+
+INSERT INTO horario_medico (
+    id_medico, id_clinica, dia_semana, hora_inicio, hora_fin
+)
+SELECT
+    m.id_medico,
+    c.id_clinica,
+    d.dia_semana,
+    '14:00',
+    '20:00'
+FROM medico m
+CROSS JOIN clinica c
+CROSS JOIN (
+    SELECT 'LUNES' dia_semana FROM dual
+    UNION ALL SELECT 'MARTES' FROM dual
+    UNION ALL SELECT 'MIERCOLES' FROM dual
+    UNION ALL SELECT 'JUEVES' FROM dual
+    UNION ALL SELECT 'VIERNES' FROM dual
+) d
+WHERE m.numero_colegiado = '61324'
+AND c.codigo_clinica = '4';
+
+INSERT INTO horario_medico (
+    id_medico, id_clinica, dia_semana, hora_inicio, hora_fin
+)
+SELECT
+    m.id_medico,
+    c.id_clinica,
+    d.dia_semana,
+    '15:00',
+    '21:00'
+FROM medico m
+CROSS JOIN clinica c
+CROSS JOIN (
+    SELECT 'LUNES' dia_semana FROM dual
+    UNION ALL SELECT 'MARTES' FROM dual
+    UNION ALL SELECT 'MIERCOLES' FROM dual
+    UNION ALL SELECT 'JUEVES' FROM dual
+    UNION ALL SELECT 'VIERNES' FROM dual
+) d
+WHERE m.numero_colegiado = '48751'
+AND c.codigo_clinica = '5';
+
+
+INSERT INTO horario_medico (
+    id_medico,
+    id_clinica,
+    dia_semana,
+    hora_inicio,
+    hora_fin,
+    estado
+)
+SELECT
+    m.id_medico,
+    c.id_clinica,
+    d.dia_semana,
+    '09:00',
+    '15:00',
+    'INACTIVO'
+FROM medico m
+CROSS JOIN clinica c
+CROSS JOIN (
+    SELECT 'LUNES' dia_semana FROM dual
+    UNION ALL SELECT 'MARTES' FROM dual
+    UNION ALL SELECT 'MIERCOLES' FROM dual
+    UNION ALL SELECT 'JUEVES' FROM dual
+    UNION ALL SELECT 'VIERNES' FROM dual
+) d
+WHERE m.numero_colegiado = '70432'
+AND c.codigo_clinica = '6';
+
+COMMIT;
+

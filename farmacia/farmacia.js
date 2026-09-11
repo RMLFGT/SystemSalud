@@ -1,748 +1,518 @@
-let medicamentos = [
+const API_FARMACIA = "../BackEnd/Farmacia";
 
-    {
-        id: 1,
-        nombre: "Paracetamol",
-        categoria: "Analgésicos",
-        presentacion: "Caja x 20 tabletas",
-        laboratorio: "Genfar",
-        stock: 250,
-        stockMinimo: 30,
-        precio: 18.50,
-        vencimiento: "2027-05-20",
-        descripcion: "Analgésico y antipirético."
-    },
+let medicamentos = [];
+let categorias = [];
+let medicamentoEditando = null;
+let mostrandoInactivos = false;
 
-    {
-        id: 2,
-        nombre: "Amoxicilina",
-        categoria: "Antibióticos",
-        presentacion: "Caja x 21 cápsulas",
-        laboratorio: "MK",
-        stock: 180,
-        stockMinimo: 30,
-        precio: 45.00,
-        vencimiento: "2027-02-15",
-        descripcion: "Antibiótico de amplio espectro."
-    },
+document.addEventListener("DOMContentLoaded", iniciarFarmacia);
 
-    {
-        id: 3,
-        nombre: "Ibuprofeno",
-        categoria: "Antiinflamatorios",
-        presentacion: "Caja x 20 tabletas",
-        laboratorio: "Pfizer",
-        stock: 15,
-        stockMinimo: 30,
-        precio: 25.00,
-        vencimiento: "2026-12-10",
-        descripcion: "Antiinflamatorio y analgésico."
-    },
+async function iniciarFarmacia() {
+    crearBotonInactivos();
+    document
+        .getElementById("formFarmacia")
+        .addEventListener("submit", guardarMedicamento);
 
-    {
-        id: 4,
-        nombre: "Loratadina",
-        categoria: "Antihistamínicos",
-        presentacion: "Caja x 10 tabletas",
-        laboratorio: "Bayer",
-        stock: 95,
-        stockMinimo: 20,
-        precio: 22.50,
-        vencimiento: "2027-08-11",
-        descripcion: "Tratamiento de síntomas alérgicos."
-    },
+    document
+        .getElementById("modalFarmacia")
+        .addEventListener("click", cerrarModalDesdeFondo);
 
-    {
-        id: 5,
-        nombre: "Omeprazol",
-        categoria: "Gastrointestinales",
-        presentacion: "Caja x 14 cápsulas",
-        laboratorio: "Medifarma",
-        stock: 220,
-        stockMinimo: 30,
-        precio: 32.00,
-        vencimiento: "2027-03-25",
-        descripcion: "Protector gástrico."
-    },
+    document
+        .getElementById("buscarMedicamento")
+        .addEventListener("input", buscarMedicamento);
 
-    {
-        id: 6,
-        nombre: "Vitamina C",
-        categoria: "Vitaminas",
-        presentacion: "Frasco x 100 tabletas",
-        laboratorio: "Nature's",
-        stock: 40,
-        stockMinimo: 50,
-        precio: 38.00,
-        vencimiento: "2027-11-01",
-        descripcion: "Suplemento de vitamina C."
-    },
+    await Promise.all([
+        cargarCategorias(),
+        cargarMedicamentos()
+    ]);
+}
 
-    {
-        id: 7,
-        nombre: "Losartán",
-        categoria: "Cardiovasculares",
-        presentacion: "Caja x 30 tabletas",
-        laboratorio: "Novartis",
-        stock: 300,
-        stockMinimo: 40,
-        precio: 55.00,
-        vencimiento: "2028-01-15",
-        descripcion: "Medicamento para control de presión arterial."
-    },
+async function solicitarJson(url, opciones = {}) {
+    const respuesta = await fetch(url, opciones);
+    const texto = await respuesta.text();
 
-    {
-        id: 8,
-        nombre: "Metformina",
-        categoria: "Cardiovasculares",
-        presentacion: "Caja x 30 tabletas",
-        laboratorio: "Merck",
-        stock: 275,
-        stockMinimo: 40,
-        precio: 42.00,
-        vencimiento: "2027-07-20",
-        descripcion: "Medicamento utilizado para controlar la glucosa."
-    },
+    let contenido;
 
-    {
-        id: 9,
-        nombre: "Diclofenaco",
-        categoria: "Antiinflamatorios",
-        presentacion: "Caja x 20 tabletas",
-        laboratorio: "Voltaren",
-        stock: 12,
-        stockMinimo: 25,
-        precio: 29.50,
-        vencimiento: "2026-11-30",
-        descripcion: "Antiinflamatorio y analgésico."
-    },
-
-    {
-        id: 10,
-        nombre: "Salbutamol",
-        categoria: "Antiinflamatorios",
-        presentacion: "Inhalador",
-        laboratorio: "GSK",
-        stock: 8,
-        stockMinimo: 15,
-        precio: 65.00,
-        vencimiento: "2027-06-12",
-        descripcion: "Broncodilatador."
+    try {
+        contenido = JSON.parse(texto);
+    } catch {
+        throw new Error(
+            "El servidor no devolvió una respuesta JSON válida."
+        );
     }
 
-];
+    if (!respuesta.ok || contenido.correcto === false) {
+        throw new Error(
+            contenido.mensaje || "No fue posible completar la solicitud."
+        );
+    }
 
+    return contenido;
+}
 
-let medicamentoEditando = null;
-
-
-/* =========================
-   MOSTRAR INVENTARIO
-========================= */
-
-function renderizarMedicamentos(lista = medicamentos) {
-
-    const tabla =
-        document.getElementById(
-            "tablaFarmacia"
+async function cargarMedicamentos() {
+    try {
+        const respuesta = await solicitarJson(
+            `${API_FARMACIA}/listar.php?estado=${mostrandoInactivos ? "INACTIVO" : "ACTIVO"}`
         );
 
+        medicamentos = Array.isArray(respuesta.datos)
+            ? respuesta.datos
+            : [];
+
+        renderizarMedicamentos(medicamentos);
+        if (!mostrandoInactivos) actualizarEstadisticas(respuesta.resumen || {});
+    } catch (error) {
+        medicamentos = [];
+        renderizarMedicamentos([]);
+        actualizarEstadisticas({});
+        alert(error.message);
+    }
+}
+
+async function cargarCategorias() {
+    try {
+        const respuesta = await solicitarJson(
+            `${API_FARMACIA}/catalogos.php`
+        );
+
+        categorias = Array.isArray(respuesta.categorias)
+            ? respuesta.categorias
+            : [];
+
+        const selector = document.getElementById("categoria");
+
+        selector.innerHTML =
+            '<option value="">Seleccionar categoría</option>';
+
+        categorias.forEach(categoria => {
+            const opcion = document.createElement("option");
+            opcion.value = String(categoria.id);
+            opcion.textContent = formatearTexto(categoria.nombre);
+            selector.appendChild(opcion);
+        });
+    } catch (error) {
+        categorias = [];
+        alert(error.message);
+    }
+}
+
+function renderizarMedicamentos(lista) {
+    const tabla = document.getElementById("tablaFarmacia");
     tabla.innerHTML = "";
 
-
-    lista.forEach(medicamento => {
-
-        let estado = "Disponible";
-
-        let claseEstado = "available";
-
-        let claseStock = "stock-normal";
-
-
-        if (medicamento.stock === 0) {
-
-            estado = "Agotado";
-
-            claseEstado = "out";
-
-            claseStock = "stock-low";
-
-        } else if (
-            medicamento.stock <=
-            medicamento.stockMinimo
-        ) {
-
-            estado = "Stock bajo";
-
-            claseEstado = "low";
-
-            claseStock = "stock-low";
-
-        }
-
-
-        const fila =
-            document.createElement("tr");
-
-
-        fila.innerHTML = `
-
-            <td>
-                MED-${String(medicamento.id).padStart(3, "0")}
-            </td>
-
-
-            <td>
-
-                <div class="medicine">
-
-                    <div class="medicine-icon">
-                        💊
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            ${medicamento.nombre}
-                        </strong>
-
-                        <small>
-                            ${medicamento.laboratorio}
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </td>
-
-
-            <td>
-                ${medicamento.categoria}
-            </td>
-
-
-            <td>
-                ${medicamento.presentacion}
-            </td>
-
-
-            <td>
-
-                <span class="stock ${claseStock}">
-                    ${medicamento.stock}
-                </span>
-
-            </td>
-
-
-            <td>
-                Q ${medicamento.precio.toFixed(2)}
-            </td>
-
-
-            <td>
-                ${formatearFecha(
-                    medicamento.vencimiento
-                )}
-            </td>
-
-
-            <td>
-
-                <span class="status ${claseEstado}">
-                    ${estado}
-                </span>
-
-            </td>
-
-
-            <td>
-
-                <button
-                    class="action edit"
-                    onclick="editarMedicamento(${medicamento.id})"
-                    title="Editar"
-                >
-                    ✏️
-                </button>
-
-
-                <button
-                    class="action delete"
-                    onclick="eliminarMedicamento(${medicamento.id})"
-                    title="Eliminar"
-                >
-                    🗑️
-                </button>
-
-            </td>
-
+    if (lista.length === 0) {
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="9" style="text-align:center; color:#64748b;">
+                    No se encontraron medicamentos.
+                </td>
+            </tr>
         `;
 
+        return;
+    }
+
+    lista.forEach(medicamento => {
+        const presentacionEstado = obtenerEstadoStock(
+            medicamento.disponibilidad
+        );
+
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>MED-${String(medicamento.id).padStart(3, "0")}</td>
+            <td>
+                <div class="medicine">
+                    <div class="medicine-icon" aria-hidden="true">
+                        <svg width="22" height="22" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path d="m10.5 20.5 10-10a4.95 4.95 0 0 0-7-7l-10 10a4.95 4.95 0 0 0 7 7Z"/>
+                            <path d="m8.5 8.5 7 7"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <strong>${escaparHtml(formatearTexto(medicamento.nombre))}</strong>
+                        <small>${escaparHtml(formatearTexto(medicamento.laboratorio) || "Sin laboratorio")}</small>
+                    </div>
+                </div>
+            </td>
+            <td>${escaparHtml(formatearTexto(medicamento.categoria))}</td>
+            <td>${escaparHtml(formatearTexto(medicamento.presentacion))}</td>
+            <td>
+                <span class="stock ${presentacionEstado.claseStock}">
+                    ${Number(medicamento.stock).toLocaleString("es-GT")}
+                </span>
+            </td>
+            <td>${formatearMoneda(medicamento.precio)}</td>
+            <td>${formatearFecha(medicamento.fechaVencimiento)}</td>
+            <td>
+                <span class="status ${presentacionEstado.claseEstado}">
+                    ${presentacionEstado.texto}
+                </span>
+            </td>
+            <td>
+                ${medicamento.estado === "INACTIVO" ? `
+                <button class="action view" type="button"
+                    onclick="reactivarMedicamento(${medicamento.id})"
+                    title="Reactivar medicamento" aria-label="Reactivar medicamento">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/>
+                    </svg>
+                </button>` : `
+                <button
+                    class="action edit"
+                    type="button"
+                    onclick="editarMedicamento(${medicamento.id})"
+                    title="Editar medicamento"
+                    aria-label="Editar medicamento"
+                >
+                    <svg width="18" height="18" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path d="M12 20h9"/>
+                        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                    </svg>
+                </button>
+                <button
+                    class="action delete"
+                    type="button"
+                    onclick="desactivarMedicamento(${medicamento.id})"
+                    title="Desactivar medicamento"
+                    aria-label="Desactivar medicamento"
+                >
+                    <svg width="18" height="18" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <path d="M3 6h18"/>
+                        <path d="M8 6V4h8v2"/>
+                        <path d="M19 6l-1 14H6L5 6"/>
+                        <path d="M10 11v5"/>
+                        <path d="M14 11v5"/>
+                    </svg>
+                </button>
+                `}
+            </td>
+        `;
 
         tabla.appendChild(fila);
-
     });
-
-
-    actualizarEstadisticas();
-
 }
 
-
-/* =========================
-   ESTADÍSTICAS
-========================= */
-
-function actualizarEstadisticas() {
-
-    document.getElementById(
-        "totalMedicamentos"
-    ).textContent =
-        medicamentos.length;
-
-
-    const stock =
-        medicamentos.reduce(
-            (total, medicamento) =>
-                total + Number(medicamento.stock),
-            0
-        );
-
-
-    document.getElementById(
-        "stockTotal"
-    ).textContent =
-        stock.toLocaleString();
-
-
-    const bajos =
-        medicamentos.filter(
-            medicamento =>
-                medicamento.stock <=
-                medicamento.stockMinimo
-        ).length;
-
-
-    document.getElementById(
-        "stockBajo"
-    ).textContent =
-        bajos;
-
-
-    const valor =
-        medicamentos.reduce(
-            (total, medicamento) =>
-                total +
-                (
-                    Number(medicamento.stock) *
-                    Number(medicamento.precio)
-                ),
-            0
-        );
-
-
-    document.getElementById(
-        "valorInventario"
-    ).textContent =
-        `Q ${valor.toLocaleString(
-            "es-GT",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        )}`;
-
-
-    document.getElementById(
-        "contador"
-    ).textContent =
-        `${medicamentos.length} medicamentos`;
-
+function crearBotonInactivos() {
+    const nuevo = document.querySelector(".actions > .btn-primary");
+    if (!nuevo || document.getElementById("btnInactivos")) return;
+    const boton = document.createElement("button");
+    boton.id = "btnInactivos";
+    boton.type = "button";
+    boton.className = "btn-cancel";
+    boton.textContent = "Ver inactivos";
+    boton.addEventListener("click", alternarInactivos);
+    nuevo.before(boton);
 }
 
+async function alternarInactivos() {
+    mostrandoInactivos = !mostrandoInactivos;
+    document.getElementById("btnInactivos").textContent =
+        mostrandoInactivos ? "Ver activos" : "Ver inactivos";
+    await cargarMedicamentos();
+}
 
-/* =========================
-   ABRIR FORMULARIO
-========================= */
+async function reactivarMedicamento(id) {
+    if (!confirm("¿Deseas reactivar este medicamento?")) return;
+    try {
+        const respuesta = await solicitarJson(`${API_FARMACIA}/reactivar.php`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({id})
+        });
+        alert(respuesta.mensaje);
+        mostrandoInactivos = false;
+        document.getElementById("btnInactivos").textContent = "Ver inactivos";
+        await cargarMedicamentos();
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+function actualizarEstadisticas(resumen) {
+    document.getElementById("totalMedicamentos").textContent =
+        Number(resumen.total || 0).toLocaleString("es-GT");
+
+    document.getElementById("stockTotal").textContent =
+        Number(resumen.stockTotal || 0).toLocaleString("es-GT");
+
+    document.getElementById("stockBajo").textContent =
+        Number(resumen.stockBajo || 0).toLocaleString("es-GT");
+
+    document.getElementById("valorInventario").textContent =
+        formatearMoneda(resumen.valorInventario || 0);
+
+    const total = Number(resumen.total || 0);
+
+    document.getElementById("contador").textContent =
+        `${total} ${total === 1 ? "medicamento" : "medicamentos"}`;
+}
 
 function abrirFormulario() {
-
     medicamentoEditando = null;
+    const formulario = document.getElementById("formFarmacia");
+    formulario.reset();
 
-
-    document.getElementById(
-        "tituloFormulario"
-    ).textContent =
+    document.getElementById("tituloFormulario").textContent =
         "Nuevo medicamento";
 
-
-    document.getElementById(
-        "formFarmacia"
-    ).reset();
-
-
-    document.getElementById(
-        "stockMinimo"
-    ).value = 20;
-
-
-    document.getElementById(
-        "modalFarmacia"
-    ).classList.add("show");
-
+    document.getElementById("stockMinimo").value = "20";
+    document.getElementById("modalFarmacia").classList.add("show");
+    document.getElementById("nombre").focus();
 }
-
 
 function cerrarFormulario() {
-
-    document.getElementById(
-        "modalFarmacia"
-    ).classList.remove("show");
-
-
+    document.getElementById("modalFarmacia").classList.remove("show");
+    document.getElementById("formFarmacia").reset();
     medicamentoEditando = null;
-
 }
 
-
-/* =========================
-   GUARDAR
-========================= */
-
-document.getElementById(
-    "formFarmacia"
-).addEventListener(
-    "submit",
-    function(event) {
-
-        event.preventDefault();
-
-
-        const datos = {
-
-            nombre:
-                document.getElementById(
-                    "nombre"
-                ).value,
-
-            categoria:
-                document.getElementById(
-                    "categoria"
-                ).value,
-
-            presentacion:
-                document.getElementById(
-                    "presentacion"
-                ).value,
-
-            laboratorio:
-                document.getElementById(
-                    "laboratorio"
-                ).value,
-
-            stock:
-                Number(
-                    document.getElementById(
-                        "stock"
-                    ).value
-                ),
-
-            stockMinimo:
-                Number(
-                    document.getElementById(
-                        "stockMinimo"
-                    ).value
-                ),
-
-            precio:
-                Number(
-                    document.getElementById(
-                        "precio"
-                    ).value
-                ),
-
-            vencimiento:
-                document.getElementById(
-                    "vencimiento"
-                ).value,
-
-            descripcion:
-                document.getElementById(
-                    "descripcion"
-                ).value
-
-        };
-
-
-        if (
-            medicamentoEditando !== null
-        ) {
-
-            const medicamento =
-                medicamentos.find(
-                    medicamento =>
-                        medicamento.id ===
-                        medicamentoEditando
-                );
-
-
-            Object.assign(
-                medicamento,
-                datos
-            );
-
-
-            alert(
-                "Medicamento actualizado correctamente."
-            );
-
-        } else {
-
-            datos.id =
-                medicamentos.length > 0
-                    ? Math.max(
-                        ...medicamentos.map(
-                            medicamento =>
-                                medicamento.id
-                        )
-                    ) + 1
-                    : 1;
-
-
-            medicamentos.push(datos);
-
-
-            alert(
-                "Medicamento registrado correctamente."
-            );
-
-        }
-
-
-        renderizarMedicamentos();
-
+function cerrarModalDesdeFondo(evento) {
+    if (evento.target === evento.currentTarget) {
         cerrarFormulario();
-
     }
-);
-
-
-/* =========================
-   EDITAR
-========================= */
-
-function editarMedicamento(id) {
-
-    const medicamento =
-        medicamentos.find(
-            medicamento =>
-                medicamento.id === id
-        );
-
-
-    if (!medicamento) return;
-
-
-    medicamentoEditando = id;
-
-
-    document.getElementById(
-        "tituloFormulario"
-    ).textContent =
-        "Editar medicamento";
-
-
-    document.getElementById(
-        "nombre"
-    ).value =
-        medicamento.nombre;
-
-
-    document.getElementById(
-        "categoria"
-    ).value =
-        medicamento.categoria;
-
-
-    document.getElementById(
-        "presentacion"
-    ).value =
-        medicamento.presentacion;
-
-
-    document.getElementById(
-        "laboratorio"
-    ).value =
-        medicamento.laboratorio;
-
-
-    document.getElementById(
-        "stock"
-    ).value =
-        medicamento.stock;
-
-
-    document.getElementById(
-        "stockMinimo"
-    ).value =
-        medicamento.stockMinimo;
-
-
-    document.getElementById(
-        "precio"
-    ).value =
-        medicamento.precio;
-
-
-    document.getElementById(
-        "vencimiento"
-    ).value =
-        medicamento.vencimiento;
-
-
-    document.getElementById(
-        "descripcion"
-    ).value =
-        medicamento.descripcion;
-
-
-    document.getElementById(
-        "modalFarmacia"
-    ).classList.add("show");
-
 }
 
+async function guardarMedicamento(evento) {
+    evento.preventDefault();
 
-/* =========================
-   ELIMINAR
-========================= */
+    const boton = evento.submitter ||
+        document.querySelector("#formFarmacia button[type='submit']");
 
-function eliminarMedicamento(id) {
+    const datos = {
+        id: medicamentoEditando,
+        idCategoria: Number(
+            document.getElementById("categoria").value
+        ),
+        nombre: document.getElementById("nombre").value.trim(),
+        presentacion: document
+            .getElementById("presentacion")
+            .value
+            .trim(),
+        laboratorio: document
+            .getElementById("laboratorio")
+            .value
+            .trim(),
+        stock: Number(document.getElementById("stock").value),
+        stockMinimo: Number(
+            document.getElementById("stockMinimo").value
+        ),
+        precio: Number(document.getElementById("precio").value),
+        fechaVencimiento: document.getElementById("vencimiento").value,
+        descripcion: document
+            .getElementById("descripcion")
+            .value
+            .trim()
+    };
 
-    const medicamento =
-        medicamentos.find(
-            medicamento =>
-                medicamento.id === id
-        );
+    if (
+        !datos.idCategoria ||
+        !datos.nombre ||
+        !datos.presentacion ||
+        !datos.fechaVencimiento
+    ) {
+        alert("Complete todos los campos obligatorios.");
+        return;
+    }
 
+    const textoOriginal = boton.textContent;
+    boton.disabled = true;
+    boton.textContent = "Guardando...";
 
-    if (!medicamento) return;
-
-
-    const confirmar =
-        confirm(
-            `¿Deseas eliminar "${medicamento.nombre}" del inventario?`
-        );
-
-
-    if (!confirmar) return;
-
-
-    medicamentos =
-        medicamentos.filter(
-            medicamento =>
-                medicamento.id !== id
-        );
-
-
-    renderizarMedicamentos();
-
-
-    alert(
-        "Medicamento eliminado correctamente."
-    );
-
-}
-
-
-/* =========================
-   BUSCAR
-========================= */
-
-function buscarMedicamento() {
-
-    const texto =
-        document.getElementById(
-            "buscarMedicamento"
-        ).value
-        .toLowerCase()
-        .trim();
-
-
-    const resultados =
-        medicamentos.filter(
-            medicamento => {
-
-                const contenido = `
-
-                    ${medicamento.nombre}
-
-                    ${medicamento.categoria}
-
-                    ${medicamento.presentacion}
-
-                    ${medicamento.laboratorio}
-
-                `.toLowerCase();
-
-
-                return contenido.includes(
-                    texto
-                );
-
+    try {
+        const editando = medicamentoEditando !== null;
+        const respuesta = await solicitarJson(
+            `${API_FARMACIA}/${editando ? "actualizar.php" : "guardar.php"}`,
+            {
+                method: editando ? "PUT" : "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datos)
             }
         );
 
+        alert(respuesta.mensaje);
+        cerrarFormulario();
 
-    renderizarMedicamentos(
-        resultados
+        await cargarMedicamentos();
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        boton.disabled = false;
+        boton.textContent = textoOriginal;
+    }
+}
+
+function editarMedicamento(id) {
+    const medicamento = medicamentos.find(
+        elemento => Number(elemento.id) === Number(id)
     );
 
+    if (!medicamento) {
+        alert("No se encontró el medicamento seleccionado.");
+        return;
+    }
+
+    medicamentoEditando = medicamento.id;
+
+    document.getElementById("tituloFormulario").textContent =
+        "Editar medicamento";
+    document.getElementById("nombre").value = medicamento.nombre;
+    document.getElementById("categoria").value =
+        String(medicamento.idCategoria);
+    document.getElementById("presentacion").value =
+        medicamento.presentacion;
+    document.getElementById("laboratorio").value =
+        medicamento.laboratorio;
+    document.getElementById("stock").value = medicamento.stock;
+    document.getElementById("stockMinimo").value =
+        medicamento.stockMinimo;
+    document.getElementById("precio").value = medicamento.precio;
+    document.getElementById("vencimiento").value =
+        medicamento.fechaVencimiento;
+    document.getElementById("descripcion").value =
+        medicamento.descripcion;
+
+    document.getElementById("modalFarmacia").classList.add("show");
+    document.getElementById("nombre").focus();
 }
 
+async function desactivarMedicamento(id) {
+    const medicamento = medicamentos.find(
+        elemento => Number(elemento.id) === Number(id)
+    );
 
-/* =========================
-   FECHA
-========================= */
+    if (!medicamento) {
+        alert("No se encontró el medicamento seleccionado.");
+        return;
+    }
+
+    const confirmado = confirm(
+        `¿Deseas desactivar "${formatearTexto(medicamento.nombre)}"?\n\n` +
+        "El registro permanecerá en Oracle, pero dejará de aparecer " +
+        "en el inventario activo."
+    );
+
+    if (!confirmado) {
+        return;
+    }
+
+    try {
+        const respuesta = await solicitarJson(
+            `${API_FARMACIA}/desactivar.php`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ id: medicamento.id })
+            }
+        );
+
+        alert(respuesta.mensaje);
+        await cargarMedicamentos();
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+function buscarMedicamento() {
+    const texto = document
+        .getElementById("buscarMedicamento")
+        .value
+        .trim()
+        .toLocaleLowerCase("es");
+
+    if (!texto) {
+        renderizarMedicamentos(medicamentos);
+        return;
+    }
+
+    const resultados = medicamentos.filter(medicamento => {
+        const contenido = [
+            medicamento.nombre,
+            medicamento.categoria,
+            medicamento.presentacion,
+            medicamento.laboratorio
+        ]
+            .join(" ")
+            .toLocaleLowerCase("es");
+
+        return contenido.includes(texto);
+    });
+
+    renderizarMedicamentos(resultados);
+}
+
+function obtenerEstadoStock(disponibilidad) {
+    if (disponibilidad === "AGOTADO") {
+        return {
+            texto: "Agotado",
+            claseEstado: "out",
+            claseStock: "stock-low"
+        };
+    }
+
+    if (disponibilidad === "STOCK_BAJO") {
+        return {
+            texto: "Stock bajo",
+            claseEstado: "low",
+            claseStock: "stock-low"
+        };
+    }
+
+    return {
+        texto: "Disponible",
+        claseEstado: "available",
+        claseStock: "stock-normal"
+    };
+}
 
 function formatearFecha(fecha) {
+    if (!fecha) {
+        return "Sin fecha";
+    }
 
-    if (!fecha) return "";
+    const partes = fecha.split("-");
 
-    const partes =
-        fecha.split("-");
+    if (partes.length !== 3) {
+        return fecha;
+    }
 
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
-
 }
 
+function formatearMoneda(valor) {
+    return new Intl.NumberFormat("es-GT", {
+        style: "currency",
+        currency: "GTQ",
+        minimumFractionDigits: 2
+    }).format(Number(valor || 0));
+}
 
-/* =========================
-   CERRAR MODAL
-========================= */
+function formatearTexto(texto) {
+    return String(texto || "")
+        .toLocaleLowerCase("es")
+        .replace(/(^|[\s/-])\p{L}/gu, letra => letra.toLocaleUpperCase("es"));
+}
 
-document.getElementById(
-    "modalFarmacia"
-).addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            event.target === this
-        ) {
-
-            cerrarFormulario();
-
-        }
-
-    }
-);
-
-
-/* =========================
-   INICIO
-========================= */
-
-renderizarMedicamentos();
+function escaparHtml(valor) {
+    return String(valor)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}

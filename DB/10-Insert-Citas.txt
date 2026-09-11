@@ -1,0 +1,100 @@
+INSERT INTO cita (
+    id_paciente,
+    id_medico,
+    id_clinica,
+    fecha_hora,
+    motivo,
+    notas,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    c.id_clinica,
+    TIMESTAMP '2026-09-07 08:00:00',
+    'CONTROL CARDIACO',
+    'Paciente con cita programada',
+    'CONFIRMADA'
+FROM paciente p
+CROSS JOIN medico m
+CROSS JOIN clinica c
+WHERE p.dpi = '1234567890101'
+  AND m.numero_colegiado = '45821'
+  AND c.codigo_clinica = '1';
+
+
+INSERT INTO cita (
+    id_paciente,
+    id_medico,
+    id_clinica,
+    fecha_hora,
+    motivo,
+    notas,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    c.id_clinica,
+    TIMESTAMP '2026-09-07 09:00:00',
+    'CONSULTA GENERAL',
+    NULL,
+    'PENDIENTE'
+FROM paciente p
+CROSS JOIN medico m
+CROSS JOIN clinica c
+WHERE p.dpi = '2345678900101'
+  AND m.numero_colegiado = '39215'
+  AND c.codigo_clinica = '2';
+
+
+INSERT INTO cita (
+    id_paciente,
+    id_medico,
+    id_clinica,
+    fecha_hora,
+    motivo,
+    notas,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    c.id_clinica,
+    TIMESTAMP '2026-09-07 10:00:00',
+    'REVISION DE PIEL',
+    NULL,
+    'CONFIRMADA'
+FROM paciente p
+CROSS JOIN medico m
+CROSS JOIN clinica c
+WHERE p.dpi = '3456789010101'
+  AND m.numero_colegiado = '52147'
+  AND c.codigo_clinica = '3';
+
+INSERT INTO cita (
+    id_paciente,
+    id_medico,
+    id_clinica,
+    fecha_hora,
+    motivo,
+    notas,
+    estado
+)
+SELECT
+    p.id_paciente,
+    m.id_medico,
+    c.id_clinica,
+    TIMESTAMP '2026-09-07 14:00:00',
+    'CONSULTA GINECOLOGICA',
+    'Cita cancelada',
+    'CANCELADA' 
+FROM paciente p
+CROSS JOIN medico m
+CROSS JOIN clinica c
+WHERE p.dpi = '4567890120101'
+  AND m.numero_colegiado = '61324'
+  AND c.codigo_clinica = '4';
+  
+  COMMIT;
+
