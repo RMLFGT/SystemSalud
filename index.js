@@ -22,21 +22,6 @@ function configurarNavegacion() {
     document.getElementById("verCitas")?.addEventListener("click", () => {
         window.location.href = "citas/citas.html";
     });
-
-    document.getElementById("cerrarSesion")?.addEventListener("click", evento => {
-        evento.preventDefault();
-        if (confirm("¿Seguro que deseas cerrar sesión?")) {
-            window.location.href = "login/login.html";
-        }
-    });
-
-    const configuracion = document.querySelector(
-        '.sidebar-bottom a[href="configuracion/configuracion.html"]'
-    );
-    configuracion?.addEventListener("click", evento => {
-        evento.preventDefault();
-        alert("Módulo de configuración próximamente disponible.");
-    });
 }
 
 function configurarCitas() {

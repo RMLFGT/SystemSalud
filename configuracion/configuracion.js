@@ -66,13 +66,28 @@ function cambiarPassword() {
     alert("Contraseña actualizada correctamente.");
 }
 
-function cerrarTodasLasSesiones() {
-    const confirmar = confirm("¿Deseas cerrar todas las sesiones activas?");
+async function cerrarTodasLasSesiones() {
+    const confirmar = confirm("¿Deseas cerrar la sesión actual?");
     if (!confirmar) return;
 
-    sessionStorage.removeItem("saludSystemSesion");
-    alert("Todas las sesiones han sido cerradas.");
-    window.location.href = "../login/login.html";
+    try {
+        const respuesta = await fetch("../BackEnd/Usuarios/cerrar_sesion.php", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" },
+            cache: "no-store"
+        });
+
+        const resultado = await respuesta.json();
+
+        if (!respuesta.ok || resultado.correcto !== true) {
+            throw new Error(resultado.mensaje || "No fue posible cerrar la sesión.");
+        }
+
+        window.location.replace("../login/login.html");
+    } catch (error) {
+        alert(error.message || "No fue posible cerrar la sesión.");
+    }
 }
 
 function restaurarConfiguracion() {

@@ -260,18 +260,12 @@ document.getElementById("modalPaciente").addEventListener("click", function(even
 document.getElementById("buscarPaciente").addEventListener("input", buscarPaciente);
 
 document.addEventListener("keydown", event => {
-    if (event.key === "Escape" &&
-        document.getElementById("modalPaciente").classList.contains("show")) {
+    if (
+        event.key === "Escape" &&
+        document.getElementById("modalPaciente").classList.contains("show")
+    ) {
         cerrarFormulario();
     }
 });
 
-document.getElementById("cerrarSesion").addEventListener("click", event => {
-    event.preventDefault();
-    if (confirm("¿Seguro que deseas cerrar sesión?")) {
-        window.location.href = "../login/login.html";
-    }
-});
-
 cargarPacientes();
-

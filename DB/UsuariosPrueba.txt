@@ -1,0 +1,5 @@
+
+medico.prueba	        Medico2026*
+laboratorio.prueba	Laboratorio2026*
+farmacia.prueba	        Farmacia2026*
+lset			Admin123

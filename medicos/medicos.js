@@ -213,12 +213,6 @@ document.addEventListener("keydown", event => {
     }
 });
 
-document.getElementById("cerrarSesion").addEventListener("click", event => {
-    event.preventDefault();
-    if (confirm("¿Seguro que deseas cerrar sesión?")) {
-        window.location.href = "../login/login.html";
-    }
-});
 
 prepararCampoClinica();
 Promise.all([cargarCatalogos(), cargarMedicos()]);
