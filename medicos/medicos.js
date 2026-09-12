@@ -83,6 +83,7 @@ let medicoEditando = null;
 ========================= */
 
 function renderizarMedicos(lista = medicos) {
+    SaludDB.persist("medicos", medicos);
 
     const tabla =
         document.getElementById("tablaMedicos");
@@ -612,4 +613,7 @@ document.getElementById(
    CARGAR DATOS
 ========================= */
 
-renderizarMedicos();
+SaludDB.load("medicos", medicos).then(datos => {
+    medicos = datos;
+    renderizarMedicos();
+}).catch(error => { console.error(error); renderizarMedicos(); });

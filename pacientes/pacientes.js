@@ -244,6 +244,7 @@ document.getElementById("formPaciente")
 ========================= */
 
 function renderizarPacientes(lista = pacientes) {
+    SaludDB.persist("pacientes", pacientes);
 
     const tabla =
         document.getElementById("tablaPacientes");
@@ -584,4 +585,7 @@ document.getElementById("modalPaciente")
    CARGAR TABLA
 ========================= */
 
-renderizarPacientes();
+SaludDB.load("pacientes", pacientes).then(datos => {
+    pacientes = datos;
+    renderizarPacientes();
+}).catch(error => { console.error(error); renderizarPacientes(); });

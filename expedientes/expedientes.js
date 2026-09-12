@@ -113,6 +113,7 @@ let expedienteEditando = null;
 ========================= */
 
 function renderizarExpedientes(lista = expedientes) {
+    SaludDB.persist("expedientes", expedientes);
 
     const tabla =
         document.getElementById(
@@ -746,4 +747,7 @@ document.getElementById(
    INICIAR
 ========================= */
 
-renderizarExpedientes();
+SaludDB.load("expedientes", expedientes).then(datos => {
+    expedientes = datos;
+    renderizarExpedientes();
+}).catch(error => { console.error(error); renderizarExpedientes(); });
