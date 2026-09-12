@@ -67,16 +67,10 @@ if (botones.length > 0) {
    CERRAR SESIÓN
 ===================================== */
 
-const enlaces =
-    document.querySelectorAll(
-        ".sidebar-bottom a"
-    );
+const cerrarSesion = document.getElementById("cerrarSesion");
 
 
-if (enlaces.length > 1) {
-
-    const cerrarSesion =
-        enlaces[1];
+if (cerrarSesion) {
 
 
     cerrarSesion.addEventListener(
@@ -93,6 +87,8 @@ if (enlaces.length > 1) {
 
 
             if (confirmar) {
+
+                sessionStorage.removeItem("saludSystemSesion");
 
                 alert(
                     "Sesión cerrada correctamente."
@@ -114,10 +110,9 @@ if (enlaces.length > 1) {
    CONFIGURACIÓN
 ===================================== */
 
-if (enlaces.length > 0) {
+const configuracion = document.querySelector('.sidebar-bottom a[href="configuracion/configuracion.html"]');
 
-    const configuracion =
-        enlaces[0];
+if (configuracion) {
 
 
     configuracion.addEventListener(
@@ -127,9 +122,7 @@ if (enlaces.length > 0) {
             event.preventDefault();
 
 
-            alert(
-                "Módulo de configuración próximamente disponible."
-            );
+            window.location.href = "configuracion/configuracion.html";
 
         }
     );

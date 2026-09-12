@@ -99,6 +99,7 @@ let estudioEditando = null;
 ========================= */
 
 function renderizarEstudios(lista = estudios) {
+    SaludDB.persist("estudios", estudios);
 
     const tabla =
         document.getElementById("tablaLaboratorio");
@@ -745,4 +746,7 @@ document.getElementById(
    INICIAR
 ========================= */
 
-renderizarEstudios();
+SaludDB.load("estudios", estudios).then(datos => {
+    estudios = datos;
+    renderizarEstudios();
+}).catch(error => { console.error(error); renderizarEstudios(); });

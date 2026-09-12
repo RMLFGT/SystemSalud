@@ -107,6 +107,7 @@ let citaEditando = null;
 ========================= */
 
 function renderizarCitas(lista = citas) {
+    SaludDB.persist("citas", citas);
 
     const tabla =
         document.getElementById("tablaCitas");
@@ -747,4 +748,7 @@ document.getElementById(
    CARGAR
 ========================= */
 
-renderizarCitas();
+SaludDB.load("citas", citas).then(datos => {
+    citas = datos;
+    renderizarCitas();
+}).catch(error => { console.error(error); renderizarCitas(); });

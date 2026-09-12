@@ -141,6 +141,7 @@ let medicamentoEditando = null;
 ========================= */
 
 function renderizarMedicamentos(lista = medicamentos) {
+    SaludDB.persist("medicamentos", medicamentos);
 
     const tabla =
         document.getElementById(
@@ -745,4 +746,7 @@ document.getElementById(
    INICIO
 ========================= */
 
-renderizarMedicamentos();
+SaludDB.load("medicamentos", medicamentos).then(datos => {
+    medicamentos = datos;
+    renderizarMedicamentos();
+}).catch(error => { console.error(error); renderizarMedicamentos(); });
