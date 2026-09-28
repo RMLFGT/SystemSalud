@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Clínica NovaSalud: atención médica cercana, moderna y confiable.">
+    <title>NovaSalud | Tu bienestar comienza hoy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a class="brand" href="#inicio" aria-label="NovaSalud, inicio">
+            <span class="brand-mark" aria-hidden="true">+</span>
+            <span>Nova<span>Salud</span></span>
+        </a>
+
+        <button class="menu-button" type="button" aria-label="Abrir menú" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav class="nav" aria-label="Navegación principal">
+            <a href="#servicios">Servicios</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#contacto">Contacto</a>
+            <a class="nav-cta" href="#contacto">Reservar cita</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="inicio">
+            <div class="hero-copy reveal">
+                <span class="eyebrow"><i></i> Cuidamos de ti, todos los días</span>
+                <h1>Tu salud merece una atención <em>extraordinaria.</em></h1>
+                <p>Especialistas, tecnología y un trato humano en un solo lugar. Agenda tu consulta y da hoy el primer paso hacia una vida más saludable.</p>
+                <div class="hero-actions">
+                    <a class="button primary" href="#contacto">Agendar una cita <span>→</span></a>
+                    <a class="button secondary" href="#servicios"><span class="play">▶</span> Conocer servicios</a>
+                </div>
+                <div class="trust-row">
+                    <div class="avatars"><span>AM</span><span>LR</span><span>MC</span><span>+</span></div>
+                    <div><strong>4.9 / 5</strong><small><b>★★★★★</b> Más de 2,000 pacientes felices</small></div>
+                </div>
+            </div>
+
+            <div class="hero-visual reveal">
+                <div class="visual-orbit orbit-one"></div>
+                <div class="visual-orbit orbit-two"></div>
+                <div class="doctor-card">
+                    <div class="medical-cross">+</div>
+                    <svg class="doctor" viewBox="0 0 420 560" role="img" aria-label="Doctora de NovaSalud">
+                        <defs>
+                            <linearGradient id="coat" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#dfeae7"/></linearGradient>
+                            <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#16a889"/><stop offset="1" stop-color="#087d6c"/></linearGradient>
+                        </defs>
+                        <circle cx="210" cy="152" r="85" fill="#e0a77e"/>
+                        <path d="M128 152c0-73 34-111 87-111 57 0 90 40 86 112-14-24-33-44-59-57-33 28-69 41-114 42z" fill="#302d3f"/>
+                        <path d="M154 216c24 27 88 27 112 0l7 54-63 38-63-38z" fill="#d99670"/>
+                        <path d="M84 543c5-155 37-263 126-263s121 108 126 263z" fill="url(#coat)"/>
+                        <path d="M155 279l55 82 55-82c-12-8-31-14-55-14s-43 6-55 14z" fill="url(#shirt)"/>
+                        <path d="M146 273l64 88-36 45-56-112zm128 0l-64 88 36 45 56-112z" fill="#f8fcfb"/>
+                        <path d="M159 160q18 13 36 0m30 0q18 13 36 0" fill="none" stroke="#332f3e" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M190 200q20 16 40 0" fill="none" stroke="#9e5656" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M143 302c-34 19-44 66-21 101m155-101c34 19 44 66 21 101" fill="none" stroke="#243b4a" stroke-width="7" stroke-linecap="round"/>
+                        <circle cx="120" cy="410" r="14" fill="none" stroke="#243b4a" stroke-width="7"/>
+                    </svg>
+                </div>
+                <div class="floating-card availability"><span class="icon-calendar">19</span><div><strong>Citas disponibles</strong><small>Hoy, 2:30 PM</small></div></div>
+                <div class="floating-card secure"><span>✓</span><div><strong>Atención segura</strong><small>Profesionales certificados</small></div></div>
+            </div>
+        </section>
+
+        <section class="metrics" aria-label="Nuestros resultados">
+            <div><strong data-count="15">0</strong><span>Especialidades</span></div>
+            <div><strong data-count="25">0</strong><span>Médicos expertos</span></div>
+            <div><strong data-count="10">0</strong><span>Años cuidándote</span></div>
+            <div><strong data-count="98">0</strong><span>% de satisfacción</span></div>
+        </section>
+
+        <section class="services section" id="servicios">
+            <div class="section-heading reveal">
+                <div><span class="eyebrow">Todo lo que necesitas</span><h2>Salud integral en un solo lugar</h2></div>
+                <p>Te acompañamos en cada etapa con atención personalizada y soluciones pensadas para ti.</p>
+            </div>
+            <div class="service-grid">
+                <article class="service-card reveal"><span class="service-icon">♡</span><h3>Medicina general</h3><p>Evaluación completa, prevención y seguimiento para cuidar tu bienestar diario.</p><a href="#contacto">Saber más →</a></article>
+                <article class="service-card featured reveal"><span class="service-icon">⌖</span><h3>Especialidades</h3><p>Un equipo multidisciplinario preparado para darte el diagnóstico y tratamiento que necesitas.</p><a href="#contacto">Saber más →</a></article>
+                <article class="service-card reveal"><span class="service-icon">⚗</span><h3>Laboratorio clínico</h3><p>Resultados precisos y oportunos con tecnología moderna y procesos confiables.</p><a href="#contacto">Saber más →</a></article>
+            </div>
+        </section>
+
+        <section class="why section" id="nosotros">
+            <div class="why-art reveal"><div class="pulse">♥</div><div class="ring"></div><p><strong>Tu tranquilidad</strong><br>es nuestra prioridad.</p></div>
+            <div class="why-copy reveal"><span class="eyebrow">Una experiencia diferente</span><h2>Atención que se siente cercana</h2><p>Combinamos experiencia médica y calidez humana para que te sientas escuchado, acompañado y seguro.</p><ul><li><span>✓</span> Agenda fácil y sin largas esperas</li><li><span>✓</span> Equipo médico certificado</li><li><span>✓</span> Instalaciones cómodas y modernas</li></ul></div>
+        </section>
+
+        <section class="cta section" id="contacto">
+            <div><span class="eyebrow light">Tu bienestar no puede esperar</span><h2>Empieza a cuidar de ti hoy.</h2><p>Solicita tu cita. Nuestro equipo se pondrá en contacto contigo.</p></div>
+            <form class="contact-form">
+                <label><span>Nombre</span><input type="text" name="nombre" placeholder="Tu nombre" required></label>
+                <label><span>Teléfono</span><input type="tel" name="telefono" placeholder="Tu teléfono" required></label>
+                <button type="submit">Solicitar cita <span>→</span></button>
+                <p class="form-message" aria-live="polite"></p>
+            </form>
+        </section>
+    </main>
+
+    <footer><a class="brand" href="#inicio"><span class="brand-mark">+</span><span>Nova<span>Salud</span></span></a><p>© 2026 NovaSalud. Cuidamos lo que más importa.</p><a href="tel:+50222000000">+502 2200-0000</a></footer>
+    <script src="script.js"></script>
+</body>
+</html>
