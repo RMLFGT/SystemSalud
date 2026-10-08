@@ -1,0 +1,42 @@
+;;; 
+Export: Release 19.0.0.0.0 - Production on Mié Oct 7 18:47:06 2026
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+;;; 
+Conectado a: Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Iniciando "SALUDSYSTEM"."SYS_EXPORT_SCHEMA_01":  SALUDSYSTEM/********@ORCLPDB SCHEMAS=SALUDSYSTEM DIRECTORY=SALUDSYSTEM_BACKUP DUMPFILE=SaludSystem_20261007_final.dmp LOGFILE=SaludSystem_20261007_final.log 
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/TABLE_DATA
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/INDEX/STATISTICS/INDEX_STATISTICS
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/STATISTICS/TABLE_STATISTICS
+Procesando el tipo de objeto SCHEMA_EXPORT/STATISTICS/MARKER
+Procesando el tipo de objeto SCHEMA_EXPORT/PRE_SCHEMA/PROCACT_SCHEMA
+Procesando el tipo de objeto SCHEMA_EXPORT/SEQUENCE/SEQUENCE
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/TABLE
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/COMMENT
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/IDENTITY_COLUMN
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/INDEX/INDEX
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/CONSTRAINT/CONSTRAINT
+Procesando el tipo de objeto SCHEMA_EXPORT/TABLE/CONSTRAINT/REF_CONSTRAINT
+. . "SALUDSYSTEM"."CONSULTA_MEDICA"             12.55 KB       5 filas exportadas
+. . "SALUDSYSTEM"."PACIENTE"                    11.80 KB       8 filas exportadas
+. . "SALUDSYSTEM"."MEDICAMENTO"                 11.18 KB      11 filas exportadas
+. . "SALUDSYSTEM"."USUARIO"                     9.570 KB       4 filas exportadas
+. . "SALUDSYSTEM"."ESTUDIO_LABORATORIO"         9.484 KB       5 filas exportadas
+. . "SALUDSYSTEM"."MEDICO"                      9.007 KB       7 filas exportadas
+. . "SALUDSYSTEM"."HORARIO_MEDICO"              8.976 KB      35 filas exportadas
+. . "SALUDSYSTEM"."CITA"                        8.859 KB       5 filas exportadas
+. . "SALUDSYSTEM"."CLINICA"                     7.585 KB       6 filas exportadas
+. . "SALUDSYSTEM"."ROL_MODULO"                  7.742 KB      18 filas exportadas
+. . "SALUDSYSTEM"."EXPEDIENTE"                  7.335 KB       8 filas exportadas
+. . "SALUDSYSTEM"."MODULO"                      6.734 KB       9 filas exportadas
+. . "SALUDSYSTEM"."ROL"                         6.578 KB       4 filas exportadas
+. . "SALUDSYSTEM"."TIPO_CONSULTA"               6.601 KB       4 filas exportadas
+. . "SALUDSYSTEM"."CATEGORIA_MEDICAMENTO"       6.625 KB       9 filas exportadas
+. . "SALUDSYSTEM"."ESPECIALIDAD"                6.570 KB       8 filas exportadas
+. . "SALUDSYSTEM"."TIPO_ESTUDIO"                6.562 KB       7 filas exportadas
+La tabla maestra "SALUDSYSTEM"."SYS_EXPORT_SCHEMA_01" se ha cargado/descargado correctamente
+******************************************************************************
+El juego de archivos de volcado para SALUDSYSTEM.SYS_EXPORT_SCHEMA_01 es:
+  C:\ORACLEDATAPUMP\SALUDSYSTEM\SALUDSYSTEM_20261007_FINAL.DMP
+El trabajo "SALUDSYSTEM"."SYS_EXPORT_SCHEMA_01" ha terminado correctamente en Mié Oct 7 18:47:33 2026 elapsed 0 00:00:21
