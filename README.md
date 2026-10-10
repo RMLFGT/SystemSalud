@@ -32,3 +32,17 @@ El inicio de sesión es una simulación del lado del cliente y **no protege la i
 1. Abra Pacientes y registre un ejemplo ficticio.
 2. Recargue la página: el registro debe seguir presente.
 3. Abra la misma URL en otro navegador: verá una base de datos local distinta.
+
+## Aplicación instalable para celular (PWA)
+
+La interfaz incorpora un menú móvil, formularios adaptados y tablas con desplazamiento horizontal. El manifiesto usa rutas relativas para XAMPP y GitHub Pages.
+
+- Android: abre el sitio en Chrome y pulsa **Instalar app**, o utiliza el menú del navegador.
+- iPhone: abre el sitio y usa **Compartir → Agregar a pantalla de inicio**.
+- La instalación requiere HTTPS (GitHub Pages) o localhost en desarrollo; una IP local por HTTP no basta.
+- Tras la primera carga completa, el service worker guarda los módulos y permite abrirlos sin conexión. Los registros siguen en IndexedDB, separados por navegador y dispositivo.
+- Para publicar cambios de recursos, incrementa la versión CACHE en sw.js. La nueva versión se activa cuando se cierran las ventanas de la versión anterior.
+
+### Validación móvil
+
+Comprueba a 390 px y 320 px: abrir/cerrar menú, navegar por módulos, buscar, crear/editar un registro ficticio y recargar. Después de la primera carga, desactiva la red y abre otro módulo. Comprueba también instalación y relanzamiento en un celular real sobre HTTPS.
