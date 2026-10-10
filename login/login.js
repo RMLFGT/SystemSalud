@@ -68,7 +68,7 @@ loginForm.addEventListener("submit", async (event) => {
         try {
             resultado = JSON.parse(texto);
         } catch {
-            throw new Error("El servidor no devolvió una respuesta JSON válida.");
+            throw new Error("No se pudo contactar el servidor PHP. Abrí el enlace del servidor de SystemSalud; GitHub Pages solo aloja la demostración.");
         }
 
         if (!respuesta.ok || resultado.correcto !== true) {

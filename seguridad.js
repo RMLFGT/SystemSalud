@@ -101,19 +101,8 @@ async function iniciarSeguridad() {
 ===================================== */
 
 function obtenerRaizProyecto() {
-    const ruta = window.location.pathname;
-    const rutaMinuscula = ruta.toLowerCase();
-    const proyecto = "/systemsalud/";
-    const posicion = rutaMinuscula.indexOf(proyecto);
-
-    if (posicion === -1) {
-        return "/SystemSalud/";
-    }
-
-    return ruta.substring(
-        0,
-        posicion + proyecto.length
-    );
+    const script = document.querySelector('script[src$="seguridad.js"]');
+    return new URL('./', script.src).pathname;
 }
 
 
