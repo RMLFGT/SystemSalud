@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    ports:
+      - "7078:80"
+    volumes:
+      - .:/var/www/html/SystemSalud
+      - ./BackEnd/Config/config.local.php:/var/www/html/SystemSalud/BackEnd/Config/config.local.php:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

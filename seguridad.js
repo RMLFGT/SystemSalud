@@ -16,12 +16,6 @@ const URL_LOGIN =
     `${SALUDSYSTEM_RAIZ}login/login.html`;
 
 let saludSystemSesion = null;
-const pantallaPendiente = document.createElement('style');
-pantallaPendiente.textContent = 'body { visibility: hidden !important; } [hidden] { display: none !important; }';
-document.head.appendChild(pantallaPendiente);
-function revelarPantalla() {
-    pantallaPendiente.textContent = '[hidden] { display: none !important; }';
-}
 
 
 /* =====================================
@@ -82,8 +76,6 @@ async function iniciarSeguridad() {
         aplicarPermisosMenu(resultado.permisos);
 
         window.saludSystemSesion = resultado;
-        await cargarScriptsModulo();
-        revelarPantalla();
 
         document.dispatchEvent(
             new CustomEvent(
@@ -110,9 +102,14 @@ async function iniciarSeguridad() {
 
 function obtenerRaizProyecto() {
     const script = document.currentScript;
-    if (!script?.src) throw new Error('No se pudo identificar la raíz del proyecto.');
-    return new URL('.', script.src).pathname;
+
+    if (script && script.src) {
+        return new URL(".", script.src).pathname;
+    }
+
+    return "/";
 }
+
 
 /* =====================================
    IDENTIFICAR MÓDULO ACTUAL
@@ -338,8 +335,6 @@ async function manejarCierreSesion(event) {
 }
 
 function mostrarAccesoDenegado(permisos) {
-    document.body.replaceChildren();
-    revelarPantalla();
     const estilo = document.createElement("style");
     estilo.textContent = `
         .acceso-denegado-fondo {
@@ -581,14 +576,3 @@ window.SaludSystemSeguridad = {
         );
     }
 };
-async function cargarScriptsModulo() {
-    for (const marcador of document.querySelectorAll('[data-salud-modulo]')) {
-        await new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = marcador.dataset.saludModulo;
-            script.onload = resolve;
-            script.onerror = () => reject(new Error('No fue posible cargar el módulo.'));
-            document.body.appendChild(script);
-        });
-    }
-}
