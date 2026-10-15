@@ -6,7 +6,7 @@ const farmacia = document.getElementById("farmacia");
 const temaOscuro = document.getElementById("temaOscuro");
 const animaciones = document.getElementById("animaciones");
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("saludsystem:sesion-lista", () => {
     const configuracion = JSON.parse(localStorage.getItem("saludSystemConfig"));
 
     if (!configuracion) return;

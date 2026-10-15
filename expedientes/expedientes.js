@@ -12,7 +12,7 @@ async function cargarExpedientes() {
         renderizarExpedientes();
     } catch (error) {
         console.error("Error al cargar expedientes:", error);
-        alert(error.message);
+       
     }
 }
 
@@ -29,7 +29,6 @@ async function cargarCatalogos() {
         if (cita) cita.innerHTML = `<option value="">Consulta sin cita asociada</option>` + catalogos.citasConfirmadas.map(c => `<option value="${c.id}">CITA-${String(c.id).padStart(3, "0")} • ${formatearTexto(c.paciente)} • ${formatearFecha(c.fecha)} ${c.hora}</option>`).join("");
     } catch (error) {
         console.error("Error al cargar catálogos:", error);
-        alert(error.message);
     }
 }
 
@@ -42,7 +41,7 @@ async function cargarEstadisticas() {
         document.getElementById("estudiosRegistrados").textContent = resultado.datos.estudiosRegistrados;
     } catch (error) {
         console.error("Error al cargar estadísticas:", error);
-        alert(error.message);
+       
     }
 }
 
@@ -126,7 +125,7 @@ async function verExpediente(id) {
         document.body.classList.add("modal-open");
     } catch (error) {
         console.error("Error al cargar historial:", error);
-        alert(error.message);
+        
     }
 }
 
@@ -150,7 +149,7 @@ async function cambiarEstadoExpediente(id, estado) {
         await cargarExpedientes();
     } catch (error) {
         console.error("Error al cambiar el estado del expediente:", error);
-        alert(error.message);
+       
     }
 }
 
@@ -265,7 +264,7 @@ async function guardarConsulta() {
         await Promise.all([cargarExpedientes(), cargarCatalogos(), cargarEstadisticas()]);
     } catch (error) {
         console.error("Error al guardar consulta:", error);
-        alert(error.message);
+      
     }
 }
 

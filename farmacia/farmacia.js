@@ -5,7 +5,7 @@ let categorias = [];
 let medicamentoEditando = null;
 let mostrandoInactivos = false;
 
-document.addEventListener("DOMContentLoaded", iniciarFarmacia);
+document.addEventListener("saludsystem:sesion-lista", iniciarFarmacia);
 
 async function iniciarFarmacia() {
     crearBotonInactivos();
@@ -66,7 +66,6 @@ async function cargarMedicamentos() {
         medicamentos = [];
         renderizarMedicamentos([]);
         actualizarEstadisticas({});
-        alert(error.message);
     }
 }
 
@@ -93,7 +92,6 @@ async function cargarCategorias() {
         });
     } catch (error) {
         categorias = [];
-        alert(error.message);
     }
 }
 
@@ -236,7 +234,7 @@ async function reactivarMedicamento(id) {
         document.getElementById("btnInactivos").textContent = "Ver inactivos";
         await cargarMedicamentos();
     } catch (error) {
-        alert(error.message);
+      
     }
 }
 
@@ -348,7 +346,7 @@ async function guardarMedicamento(evento) {
 
         await cargarMedicamentos();
     } catch (error) {
-        alert(error.message);
+       
     } finally {
         boton.disabled = false;
         boton.textContent = textoOriginal;
@@ -424,7 +422,7 @@ async function desactivarMedicamento(id) {
         alert(respuesta.mensaje);
         await cargarMedicamentos();
     } catch (error) {
-        alert(error.message);
+      
     }
 }
 

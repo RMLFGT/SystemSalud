@@ -4,7 +4,7 @@ let catalogos = { pacientes: [], medicos: [] };
 
 async function cargarCitas() {
     try {
-        const respuesta = await fetch("../BackEnd/Citas/listar.php");
+        const respuesta = await fetch("../BackEnd/citas/listar.php");
         if (!respuesta.ok) throw new Error("Error HTTP: " + respuesta.status);
         const resultado = await respuesta.json();
         if (!resultado.correcto) throw new Error(resultado.mensaje);
@@ -58,7 +58,7 @@ function prepararFormulario() {
 
 async function cargarCatalogos() {
     try {
-        const respuesta = await fetch("../BackEnd/Citas/catalogos.php");
+        const respuesta = await fetch("../BackEnd/citas/catalogos.php");
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los catálogos");
         catalogos = resultado.datos;
@@ -67,7 +67,6 @@ async function cargarCatalogos() {
         document.getElementById("especialidad").innerHTML = `<option value="">Se completa automáticamente</option>`;
     } catch (error) {
         console.error("Error al cargar catálogos:", error);
-        alert(error.message);
     }
 }
 
@@ -83,7 +82,7 @@ async function actualizarDisponibilidad() {
     if (!idMedico || !fecha) return;
     try {
         const excluir = citaEditando !== null ? `&idCita=${citaEditando}` : "";
-        const respuesta = await fetch(`../BackEnd/Citas/disponibilidad.php?idMedico=${idMedico}&fecha=${fecha}${excluir}`);
+        const respuesta = await fetch(`../BackEnd/citas/disponibilidad.php?idMedico=${idMedico}&fecha=${fecha}${excluir}`);
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible consultar la disponibilidad");
         clinica.value = formatearTexto(resultado.datos.clinica);
@@ -92,7 +91,7 @@ async function actualizarDisponibilidad() {
     } catch (error) {
         clinica.value = "Sin disponibilidad";
         console.error("Error de disponibilidad:", error);
-        alert(error.message);
+        
     }
 }
 
@@ -190,7 +189,7 @@ async function cambiarEstadoCita(id, estado) {
     const accion = estado === "CANCELADA" ? "cancelar" : "reactivar";
     if (!confirm(`¿Desea ${accion} esta cita?`)) return;
     try {
-        const respuesta = await fetch("../BackEnd/Citas/cambiar_estado.php", {
+        const respuesta = await fetch("../BackEnd/citas/cambiar_estado.php", {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id, estado })
@@ -201,7 +200,7 @@ async function cambiarEstadoCita(id, estado) {
         await cargarCitas();
     } catch (error) {
         console.error(`Error al ${accion} la cita:`, error);
-        alert(error.message);
+       
     }
 }
 
@@ -222,7 +221,7 @@ async function guardarCita() {
     };
     try {
         const esEdicion = citaEditando !== null;
-        const respuesta = await fetch(esEdicion ? "../BackEnd/Citas/actualizar.php" : "../BackEnd/Citas/guardar.php", {
+        const respuesta = await fetch(esEdicion ? "../BackEnd/citas/actualizar.php" : "../BackEnd/citas/guardar.php", {
             method: esEdicion ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datos)
@@ -234,7 +233,7 @@ async function guardarCita() {
         await cargarCitas();
     } catch (error) {
         console.error("Error al guardar cita:", error);
-        alert(error.message);
+      
     }
 }
 

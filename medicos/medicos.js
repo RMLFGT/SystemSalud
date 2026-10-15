@@ -20,7 +20,6 @@ async function cargarMedicos() {
         renderizarMedicos();
     } catch (error) {
         console.error("Error al cargar médicos:", error);
-        alert("No fue posible cargar los médicos desde Oracle.");
     }
 }
 
@@ -59,7 +58,6 @@ async function cargarCatalogos() {
         clinica.innerHTML = `<option value="">Seleccionar</option>` + catalogos.clinicas.map(c => `<option value="${c.id}">${formatearTexto(c.nombre)} · ${c.codigo}</option>`).join("");
     } catch (error) {
         console.error("Error al cargar catálogos:", error);
-        alert(error.message);
     }
 }
 
@@ -161,7 +159,6 @@ async function cambiarEstadoMedico(id, estado) {
         await cargarMedicos();
     } catch (error) {
         console.error(`Error al ${accion} médico:`, error);
-        alert(error.message);
     }
 }
 
@@ -196,7 +193,6 @@ document.getElementById("formMedico").addEventListener("submit", async event => 
         await cargarMedicos();
     } catch (error) {
         console.error("Error al guardar médico:", error);
-        alert(error.message);
     }
 });
 

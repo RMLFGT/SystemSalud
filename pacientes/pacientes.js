@@ -92,7 +92,7 @@ document.getElementById("formPaciente").addEventListener("submit", async event =
         await cargarPacientes();
     } catch (error) {
         console.error("Error al guardar paciente:", error);
-        alert(error.message);
+    
     }
 });
 
@@ -228,7 +228,7 @@ async function eliminarPaciente(id) {
         await cargarPacientes();
     } catch (error) {
         console.error("Error al desactivar paciente:", error);
-        alert(error.message);
+  
     }
 }
 
@@ -249,7 +249,7 @@ async function reactivarPaciente(id) {
         await cargarPacientes();
     } catch (error) {
         console.error("Error al reactivar paciente:", error);
-        alert(error.message);
+        
     }
 }
 

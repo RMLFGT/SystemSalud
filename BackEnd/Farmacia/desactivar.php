@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/../Config/seguridad.php';
+exigirPermiso('FARMACIA', 'eliminar');
 
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../Config/conexion.php';

@@ -1,7 +1,7 @@
 const API_REPORTES = "../BackEnd/Reportes";
 let datosReporte = null;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("saludsystem:sesion-lista", () => {
     configurarFechasIniciales();
     document.getElementById("tipoReporte")
         .addEventListener("change", () => cargarReporte(false));
@@ -50,7 +50,7 @@ async function cargarReporte(abrirVista = false) {
         if (abrirVista) abrirVistaPrevia();
     } catch (error) {
         console.error("Error al generar el reporte:", error);
-        alert(error.message);
+        
     }
 }
 

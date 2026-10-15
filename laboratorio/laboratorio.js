@@ -4,7 +4,7 @@ let estudioEditando = null;
 
 async function cargarEstudios() {
     try {
-        const respuesta = await fetch("../BackEnd/Laboratorio/listar.php");
+        const respuesta = await fetch("../BackEnd/laboratorio/listar.php");
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los estudios");
         estudios = resultado.datos;
@@ -12,13 +12,13 @@ async function cargarEstudios() {
         actualizarEstadisticas(resultado.resumen);
     } catch (error) {
         console.error("Error al cargar estudios:", error);
-        alert(error.message);
+      
     }
 }
 
 async function cargarCatalogos() {
     try {
-        const respuesta = await fetch("../BackEnd/Laboratorio/catalogos.php");
+        const respuesta = await fetch("../BackEnd/laboratorio/catalogos.php");
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los catálogos");
         catalogos = resultado.datos;
@@ -28,7 +28,6 @@ async function cargarCatalogos() {
         document.getElementById("consultaLaboratorio").innerHTML = `<option value="">Sin consulta asociada</option>` + catalogos.consultas.map(item => `<option value="${item.id}">CONS-${String(item.id).padStart(3, "0")} • ${formatearTexto(item.paciente)} • ${formatearFecha(item.fecha)}</option>`).join("");
     } catch (error) {
         console.error("Error al cargar catálogos:", error);
-        alert(error.message);
     }
 }
 
@@ -181,7 +180,7 @@ async function guardarEstudio(event) {
         observaciones: document.getElementById("observaciones").value.trim()
     };
     try {
-        const respuesta = await fetch(esEdicion ? "../BackEnd/Laboratorio/actualizar.php" : "../BackEnd/Laboratorio/guardar.php", {
+        const respuesta = await fetch(esEdicion ? "../BackEnd/laboratorio/actualizar.php" : "../BackEnd/laboratorio/guardar.php", {
             method: esEdicion ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datos)
@@ -193,7 +192,7 @@ async function guardarEstudio(event) {
         await Promise.all([cargarEstudios(), cargarCatalogos()]);
     } catch (error) {
         console.error("Error al guardar estudio:", error);
-        alert(error.message);
+    
     }
 }
 

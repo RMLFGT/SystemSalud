@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../Config/seguridad.php';
+exigirPermiso('PACIENTES', 'editar');
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../Config/conexion.php';
 $conexion = null;

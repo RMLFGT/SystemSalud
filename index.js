@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("saludsystem:sesion-lista", () => {
     animarTarjetas();
     configurarNavegacion();
     configurarCitas();
