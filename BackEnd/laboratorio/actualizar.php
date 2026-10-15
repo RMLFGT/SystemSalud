@@ -12,6 +12,7 @@ function responderActualizarEstudio(int $codigo, bool $correcto, string $mensaje
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'PUT') responderActualizarEstudio(405, false, 'Método no permitido.');
+
 $datos = json_decode(file_get_contents('php://input'), true);
 if (!is_array($datos)) responderActualizarEstudio(400, false, 'El contenido enviado no es válido.');
 $id = filter_var($datos['id'] ?? null, FILTER_VALIDATE_INT);

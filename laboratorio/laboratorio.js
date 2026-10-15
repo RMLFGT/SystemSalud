@@ -192,9 +192,9 @@ async function guardarEstudio(event) {
         await Promise.all([cargarEstudios(), cargarCatalogos()]);
     } catch (error) {
         console.error("Error al guardar estudio:", error);
-    
     }
 }
+
 
 function editarEstudio(id) {
     const estudio = estudios.find(item => item.id === id);
