@@ -3,10 +3,10 @@ declare(strict_types=1);
 require_once __DIR__ . '/../Config/seguridad.php';
 exigirPermiso('CITAS', 'editar');
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/../Config/conexion.php';
+require_once __DIR__ . '/../Config/Conexion.php';
 
 function responderActualizacionCita(int $codigo, bool $correcto, string $mensaje): never {
-    
+
     http_response_code($codigo);
     echo json_encode(['correcto' => $correcto, 'mensaje' => $mensaje], JSON_UNESCAPED_UNICODE);
     exit;
