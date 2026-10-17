@@ -65,7 +65,8 @@ function consultarValor(
     $fila = oci_fetch_assoc($consulta);
     oci_free_statement($consulta);
 
-    return (string)($fila['VALOR'] ?? '0');
+    if (!isset($fila['VALOR'])) throw new RuntimeException('La consulta no devolvió el indicador esperado.');
+    return (string)$fila['VALOR'];
 }
 
 function consultarFilas(

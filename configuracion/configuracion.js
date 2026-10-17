@@ -7,7 +7,14 @@ const temaOscuro = document.getElementById("temaOscuro");
 const animaciones = document.getElementById("animaciones");
 
 document.addEventListener("saludsystem:sesion-lista", () => {
-    const configuracion = JSON.parse(localStorage.getItem("saludSystemConfig"));
+    const usuario = window.saludSystemSesion.usuario;
+    const nombre = [usuario.nombre, usuario.apellido].filter(Boolean).join(' ') || usuario.nombreUsuario;
+    document.querySelector('.profile-info h3').textContent = nombre;
+    document.querySelector('.profile-info p').textContent = usuario.correo || 'Sin correo registrado';
+    document.querySelector('.profile-info span').textContent = usuario.rol;
+    let configuracion;
+    try { configuracion = JSON.parse(localStorage.getItem('saludSystemConfig')); }
+    catch { configuracion = null; }
 
     if (!configuracion) return;
 
@@ -34,7 +41,7 @@ function guardarConfiguracion() {
 
     localStorage.setItem("saludSystemConfig", JSON.stringify(configuracion));
     aplicarTema();
-    alert("Configuración guardada correctamente.");
+    alert("Preferencias guardadas en este navegador.");
 }
 
 temaOscuro.addEventListener("change", aplicarTema);
@@ -44,26 +51,11 @@ function aplicarTema() {
 }
 
 function editarPerfil() {
-    const nombre = prompt("Ingresa el nombre del administrador:", "Administrador");
-
-    if (nombre && nombre.trim() !== "") {
-        alert(`Perfil actualizado correctamente.\n\nNuevo nombre: ${nombre}`);
-    }
+    alert('La edición del perfil todavía no está conectada al servidor. No se guardó ningún cambio.');
 }
 
 function cambiarPassword() {
-    const actual = prompt("Ingresa tu contraseña actual:");
-    if (!actual) return;
-
-    const nueva = prompt("Ingresa tu nueva contraseña:");
-    if (!nueva) return;
-
-    if (nueva.length < 4) {
-        alert("La contraseña debe tener al menos 4 caracteres.");
-        return;
-    }
-
-    alert("Contraseña actualizada correctamente.");
+    alert('El cambio de contraseña todavía no está conectado al servidor. No se guardó ningún cambio.');
 }
 
 async function cerrarTodasLasSesiones() {

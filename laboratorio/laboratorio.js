@@ -4,30 +4,33 @@ let estudioEditando = null;
 
 async function cargarEstudios() {
     try {
-        const respuesta = await fetch("../BackEnd/laboratorio/listar.php");
+        const respuesta = await fetch("../BackEnd/Laboratorio/listar.php", {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los estudios");
+        SaludDatos.recuperar('laboratorio');
         estudios = resultado.datos;
         renderizarEstudios();
         actualizarEstadisticas(resultado.resumen);
     } catch (error) {
-        console.error("Error al cargar estudios:", error);
-      
+        estudios = [];
+        SaludDatos.fallo('laboratorio', error, {"tabla":"tablaLaboratorio","indicadores":["#totalEstudios","#pendientes","#completados","#estudiosMes","#contador"],"mensaje":"No se pudieron consultar los registros. Recarga la página para volver a intentar."});
     }
 }
 
 async function cargarCatalogos() {
     try {
-        const respuesta = await fetch("../BackEnd/laboratorio/catalogos.php");
+        const respuesta = await fetch("../BackEnd/Laboratorio/catalogos.php", {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los catálogos");
+        SaludDatos.recuperar('catalogos');
         catalogos = resultado.datos;
         document.getElementById("paciente").innerHTML = `<option value="">Seleccionar paciente</option>` + catalogos.pacientes.map(item => `<option value="${item.id}">${formatearTexto(item.nombre)} - ${item.dpi}</option>`).join("");
         document.getElementById("medico").innerHTML = `<option value="">Seleccionar médico</option>` + catalogos.medicos.map(item => `<option value="${item.id}">${formatearTexto(item.nombre)} - ${formatearTexto(item.especialidad)}</option>`).join("");
         document.getElementById("estudio").innerHTML = `<option value="">Seleccionar estudio</option>` + catalogos.tiposEstudio.map(item => `<option value="${item.id}">${formatearTexto(item.nombre)}</option>`).join("");
         document.getElementById("consultaLaboratorio").innerHTML = `<option value="">Sin consulta asociada</option>` + catalogos.consultas.map(item => `<option value="${item.id}">CONS-${String(item.id).padStart(3, "0")} • ${formatearTexto(item.paciente)} • ${formatearFecha(item.fecha)}</option>`).join("");
     } catch (error) {
-        console.error("Error al cargar catálogos:", error);
+        
+        SaludDatos.fallo('catalogos', error, {"mensaje":"No fue posible consultar los catálogos del formulario. Recarga la página antes de registrar datos."});
     }
 }
 
@@ -49,6 +52,7 @@ function claseEstado(estado) {
 }
 
 function renderizarEstudios(lista = estudios) {
+    if (SaludDatos.bloqueada('laboratorio', 'tablaLaboratorio')) return;
     const tabla = document.getElementById("tablaLaboratorio");
     tabla.innerHTML = "";
 
@@ -180,7 +184,7 @@ async function guardarEstudio(event) {
         observaciones: document.getElementById("observaciones").value.trim()
     };
     try {
-        const respuesta = await fetch(esEdicion ? "../BackEnd/laboratorio/actualizar.php" : "../BackEnd/laboratorio/guardar.php", {
+        const respuesta = await fetch(esEdicion ? "../BackEnd/Laboratorio/actualizar.php" : "../BackEnd/Laboratorio/guardar.php", {
             method: esEdicion ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datos)

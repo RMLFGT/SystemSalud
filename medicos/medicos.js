@@ -4,8 +4,9 @@ let catalogos = { especialidades: [], clinicas: [] };
 
 async function cargarMedicos() {
     try {
-        const respuesta = await fetch("../BackEnd/Medicos/listar.php");
+        const respuesta = await fetch("../BackEnd/Medicos/listar.php", {cache: 'no-store'});
         if (!respuesta.ok) throw new Error("Error HTTP: " + respuesta.status);
+        SaludDatos.recuperar('medicos');
         const resultado = await respuesta.json();
         if (!resultado.correcto) throw new Error(resultado.mensaje);
         medicos = resultado.datos.map(medico => ({
@@ -19,7 +20,8 @@ async function cargarMedicos() {
         }));
         renderizarMedicos();
     } catch (error) {
-        console.error("Error al cargar médicos:", error);
+        medicos = [];
+        SaludDatos.fallo('medicos', error, {"tabla":"tablaMedicos","indicadores":[".stats strong",".stats h3",".total"],"mensaje":"No se pudieron consultar los registros. Recarga la página para volver a intentar."});
     }
 }
 
@@ -48,20 +50,23 @@ function prepararCampoClinica() {
 
 async function cargarCatalogos() {
     try {
-        const respuesta = await fetch("../BackEnd/Medicos/catalogos.php");
+        const respuesta = await fetch("../BackEnd/Medicos/catalogos.php", {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los catálogos");
+        SaludDatos.recuperar('catalogos');
         catalogos = resultado.datos;
         const especialidad = document.getElementById("especialidad");
         const clinica = document.getElementById("clinica");
         especialidad.innerHTML = `<option value="">Seleccionar</option>` + catalogos.especialidades.map(e => `<option value="${e.id}">${formatearTexto(e.nombre)}</option>`).join("");
         clinica.innerHTML = `<option value="">Seleccionar</option>` + catalogos.clinicas.map(c => `<option value="${c.id}">${formatearTexto(c.nombre)} · ${c.codigo}</option>`).join("");
     } catch (error) {
-        console.error("Error al cargar catálogos:", error);
+        
+        SaludDatos.fallo('catalogos', error, {"mensaje":"No fue posible consultar los catálogos del formulario. Recarga la página antes de registrar datos."});
     }
 }
 
 function renderizarMedicos(lista = medicos) {
+    if (SaludDatos.bloqueada('medicos', 'tablaMedicos')) return;
     const tabla = document.getElementById("tablaMedicos");
     tabla.innerHTML = "";
     if (lista.length === 0) {

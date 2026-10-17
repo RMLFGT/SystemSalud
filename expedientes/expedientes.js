@@ -5,22 +5,24 @@ let historialActual = null;
 
 async function cargarExpedientes() {
     try {
-        const respuesta = await fetch("../BackEnd/Expedientes/listar.php");
+        const respuesta = await fetch("../BackEnd/Expedientes/listar.php", {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los expedientes");
+        SaludDatos.recuperar('expedientes');
         expedientes = resultado.datos.map(e => ({ ...e, paciente: formatearTexto(e.paciente), estado: formatearTexto(e.estado) }));
         renderizarExpedientes();
     } catch (error) {
-        console.error("Error al cargar expedientes:", error);
-       
+        expedientes = [];
+        SaludDatos.fallo('expedientes', error, {"tabla":"tablaExpedientes","indicadores":["#totalExpedientes","#consultasMes",".total"],"mensaje":"No se pudieron consultar los registros. Recarga la página para volver a intentar."});
     }
 }
 
 async function cargarCatalogos() {
     try {
-        const respuesta = await fetch("../BackEnd/Expedientes/catalogos.php");
+        const respuesta = await fetch("../BackEnd/Expedientes/catalogos.php", {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los catálogos");
+        SaludDatos.recuperar('catalogos');
         catalogos = resultado.datos;
         document.getElementById("paciente").innerHTML = `<option value="">Seleccionar paciente</option>` + catalogos.pacientes.map(p => `<option value="${p.id}">${formatearTexto(p.nombre)} - ${p.dpi}</option>`).join("");
         document.getElementById("medico").innerHTML = `<option value="">Seleccionar médico</option>` + catalogos.medicos.map(m => `<option value="${m.id}">${formatearTexto(m.nombre)} - ${formatearTexto(m.especialidad)}</option>`).join("");
@@ -28,20 +30,22 @@ async function cargarCatalogos() {
         const cita = document.getElementById("cita");
         if (cita) cita.innerHTML = `<option value="">Consulta sin cita asociada</option>` + catalogos.citasConfirmadas.map(c => `<option value="${c.id}">CITA-${String(c.id).padStart(3, "0")} • ${formatearTexto(c.paciente)} • ${formatearFecha(c.fecha)} ${c.hora}</option>`).join("");
     } catch (error) {
-        console.error("Error al cargar catálogos:", error);
+        
+        SaludDatos.fallo('catalogos', error, {"mensaje":"No fue posible consultar los catálogos del formulario. Recarga la página antes de registrar datos."});
     }
 }
 
 async function cargarEstadisticas() {
     try {
-        const respuesta = await fetch("../BackEnd/Expedientes/estadisticas.php");
+        const respuesta = await fetch("../BackEnd/Expedientes/estadisticas.php", {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar las estadísticas");
+        SaludDatos.recuperar('estadisticas');
         document.getElementById("tratamientosActivos").textContent = resultado.datos.tratamientosActivos;
         document.getElementById("estudiosRegistrados").textContent = resultado.datos.estudiosRegistrados;
     } catch (error) {
-        console.error("Error al cargar estadísticas:", error);
-       
+        
+        SaludDatos.fallo('estadisticas', error, {"indicadores":["#tratamientosActivos","#estudiosRegistrados"],"mensaje":"No fue posible consultar las estadísticas clínicas."});
     }
 }
 
@@ -57,6 +61,7 @@ function formatearFecha(fecha) {
 }
 
 function renderizarExpedientes(lista = expedientes) {
+    if (SaludDatos.bloqueada('expedientes', 'tablaExpedientes')) return;
     const tabla = document.getElementById("tablaExpedientes");
     tabla.innerHTML = "";
 
@@ -98,7 +103,7 @@ function buscarExpediente() {
 
 async function verExpediente(id) {
     try {
-        const respuesta = await fetch(`../BackEnd/Expedientes/historial.php?id=${id}`);
+        const respuesta = await fetch(`../BackEnd/Expedientes/historial.php?id=${id}`, {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar el historial");
         const expediente = resultado.datos;

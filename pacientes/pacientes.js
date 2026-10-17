@@ -3,8 +3,9 @@ let pacienteEditando = null;
 
 async function cargarPacientes() {
     try {
-        const respuesta = await fetch("../BackEnd/Pacientes/listar.php");
+        const respuesta = await fetch("../BackEnd/Pacientes/listar.php", {cache: 'no-store'});
         if (!respuesta.ok) throw new Error("Error HTTP: " + respuesta.status);
+        SaludDatos.recuperar('pacientes');
 
         const resultado = await respuesta.json();
         if (!resultado.correcto) throw new Error(resultado.mensaje);
@@ -20,8 +21,8 @@ async function cargarPacientes() {
 
         renderizarPacientes();
     } catch (error) {
-        console.error("Error al cargar pacientes:", error);
-        alert("No fue posible cargar los pacientes desde Oracle.");
+        pacientes = [];
+        SaludDatos.fallo('pacientes', error, {"tabla":"tablaPacientes","indicadores":[".total"],"mensaje":"No se pudieron consultar los registros. Recarga la página para volver a intentar."});
     }
 }
 
@@ -101,6 +102,7 @@ document.getElementById("formPaciente").addEventListener("submit", async event =
 ========================= */
 
 function renderizarPacientes(lista = pacientes) {
+    if (SaludDatos.bloqueada('pacientes', 'tablaPacientes')) return;
     const tabla = document.getElementById("tablaPacientes");
     tabla.innerHTML = "";
 

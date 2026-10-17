@@ -28,7 +28,7 @@ async function iniciarFarmacia() {
 }
 
 async function solicitarJson(url, opciones = {}) {
-    const respuesta = await fetch(url, opciones);
+    const respuesta = await fetch(url, {cache: 'no-store', ...opciones});
     const texto = await respuesta.text();
 
     let contenido;
@@ -55,17 +55,16 @@ async function cargarMedicamentos() {
         const respuesta = await solicitarJson(
             `${API_FARMACIA}/listar.php?estado=${mostrandoInactivos ? "INACTIVO" : "ACTIVO"}`
         );
+        SaludDatos.recuperar('farmacia');
 
-        medicamentos = Array.isArray(respuesta.datos)
-            ? respuesta.datos
-            : [];
+        if (!Array.isArray(respuesta.datos) || !respuesta.resumen) throw new Error('Respuesta de inventario incompleta.');
+        medicamentos = respuesta.datos;
 
         renderizarMedicamentos(medicamentos);
         if (!mostrandoInactivos) actualizarEstadisticas(respuesta.resumen || {});
     } catch (error) {
         medicamentos = [];
-        renderizarMedicamentos([]);
-        actualizarEstadisticas({});
+        SaludDatos.fallo('farmacia', error, {"tabla":"tablaFarmacia","indicadores":["#totalMedicamentos","#stockTotal","#stockBajo","#valorInventario","#contador"],"mensaje":"No se pudieron consultar los registros. Recarga la página para volver a intentar."});
     }
 }
 
@@ -74,10 +73,10 @@ async function cargarCategorias() {
         const respuesta = await solicitarJson(
             `${API_FARMACIA}/catalogos.php`
         );
+        SaludDatos.recuperar('catalogos');
 
-        categorias = Array.isArray(respuesta.categorias)
-            ? respuesta.categorias
-            : [];
+        if (!Array.isArray(respuesta.categorias)) throw new Error('Respuesta de categorías incompleta.');
+        categorias = respuesta.categorias;
 
         const selector = document.getElementById("categoria");
 
@@ -91,11 +90,13 @@ async function cargarCategorias() {
             selector.appendChild(opcion);
         });
     } catch (error) {
-        categorias = [];
+        
+        SaludDatos.fallo('catalogos', error, {"mensaje":"No fue posible consultar las categorías. Recarga la página antes de registrar datos."});
     }
 }
 
 function renderizarMedicamentos(lista) {
+    if (SaludDatos.bloqueada('farmacia', 'tablaFarmacia')) return;
     const tabla = document.getElementById("tablaFarmacia");
     tabla.innerHTML = "";
 

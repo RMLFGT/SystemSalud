@@ -4,8 +4,9 @@ let catalogos = { pacientes: [], medicos: [] };
 
 async function cargarCitas() {
     try {
-        const respuesta = await fetch("../BackEnd/citas/listar.php");
+        const respuesta = await fetch("../BackEnd/Citas/listar.php", {cache: 'no-store'});
         if (!respuesta.ok) throw new Error("Error HTTP: " + respuesta.status);
+        SaludDatos.recuperar('citas');
         const resultado = await respuesta.json();
         if (!resultado.correcto) throw new Error(resultado.mensaje);
         citas = resultado.datos.map(cita => ({
@@ -21,8 +22,8 @@ async function cargarCitas() {
         }));
         renderizarCitas();
     } catch (error) {
-        console.error("Error al cargar citas:", error);
-        alert("No fue posible cargar las citas desde Oracle.");
+        citas = [];
+        SaludDatos.fallo('citas', error, {"tabla":"tablaCitas","indicadores":["#totalCitas","#citasConfirmadas","#citasPendientes","#citasCanceladas",".total"],"mensaje":"No se pudieron consultar los registros. Recarga la página para volver a intentar."});
     }
 }
 
@@ -58,15 +59,17 @@ function prepararFormulario() {
 
 async function cargarCatalogos() {
     try {
-        const respuesta = await fetch("../BackEnd/citas/catalogos.php");
+        const respuesta = await fetch("../BackEnd/Citas/catalogos.php", {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible cargar los catálogos");
+        SaludDatos.recuperar('catalogos');
         catalogos = resultado.datos;
         document.getElementById("paciente").innerHTML = `<option value="">Seleccionar paciente</option>` + catalogos.pacientes.map(p => `<option value="${p.id}">${formatearTexto(p.nombre)}</option>`).join("");
         document.getElementById("medico").innerHTML = `<option value="">Seleccionar médico</option>` + catalogos.medicos.map(m => `<option value="${m.id}" data-especialidad="${m.especialidad}">${formatearTexto(m.nombre)}</option>`).join("");
         document.getElementById("especialidad").innerHTML = `<option value="">Se completa automáticamente</option>`;
     } catch (error) {
-        console.error("Error al cargar catálogos:", error);
+        
+        SaludDatos.fallo('catalogos', error, {"mensaje":"No fue posible consultar los catálogos del formulario. Recarga la página antes de registrar datos."});
     }
 }
 
@@ -82,7 +85,7 @@ async function actualizarDisponibilidad() {
     if (!idMedico || !fecha) return;
     try {
         const excluir = citaEditando !== null ? `&idCita=${citaEditando}` : "";
-        const respuesta = await fetch(`../BackEnd/citas/disponibilidad.php?idMedico=${idMedico}&fecha=${fecha}${excluir}`);
+        const respuesta = await fetch(`../BackEnd/Citas/disponibilidad.php?idMedico=${idMedico}&fecha=${fecha}${excluir}`, {cache: 'no-store'});
         const resultado = await respuesta.json();
         if (!respuesta.ok || !resultado.correcto) throw new Error(resultado.mensaje || "No fue posible consultar la disponibilidad");
         clinica.value = formatearTexto(resultado.datos.clinica);
@@ -96,6 +99,7 @@ async function actualizarDisponibilidad() {
 }
 
 function renderizarCitas(lista = citas) {
+    if (SaludDatos.bloqueada('citas', 'tablaCitas')) return;
     const tabla = document.getElementById("tablaCitas");
     tabla.innerHTML = "";
     if (lista.length === 0) {
@@ -189,7 +193,7 @@ async function cambiarEstadoCita(id, estado) {
     const accion = estado === "CANCELADA" ? "cancelar" : "reactivar";
     if (!confirm(`¿Desea ${accion} esta cita?`)) return;
     try {
-        const respuesta = await fetch("../BackEnd/citas/cambiar_estado.php", {
+        const respuesta = await fetch("../BackEnd/Citas/cambiar_estado.php", {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id, estado })
@@ -221,7 +225,7 @@ async function guardarCita() {
     };
     try {
         const esEdicion = citaEditando !== null;
-        const respuesta = await fetch(esEdicion ? "../BackEnd/citas/actualizar.php" : "../BackEnd/citas/guardar.php", {
+        const respuesta = await fetch(esEdicion ? "../BackEnd/Citas/actualizar.php" : "../BackEnd/Citas/guardar.php", {
             method: esEdicion ? "PUT" : "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(datos)

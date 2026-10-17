@@ -1,10 +1,18 @@
 const API_REPORTES = "../BackEnd/Reportes";
 let datosReporte = null;
+let solicitudReporte = 0;
 
 document.addEventListener("saludsystem:sesion-lista", () => {
     configurarFechasIniciales();
     document.getElementById("tipoReporte")
         .addEventListener("change", () => cargarReporte(false));
+    for (const id of ['fechaInicio','fechaFin']) {
+        document.getElementById(id).addEventListener('change', () => {
+            solicitudReporte++;
+            datosReporte = null;
+            limpiarVistaReporte('Vuelve a generar el reporte con las fechas seleccionadas.');
+        });
+    }
     cargarReporte(false);
 });
 
@@ -12,7 +20,7 @@ function configurarFechasIniciales() {
     const inicio = document.getElementById("fechaInicio");
     const fin = document.getElementById("fechaFin");
     if (!inicio.value) inicio.value = `${new Date().getFullYear()}-01-01`;
-    if (!fin.value) fin.value = new Date().toISOString().slice(0, 10);
+    if (!fin.value) fin.value = fechaLocalReporte(new Date());
 }
 
 async function solicitarJson(url) {
@@ -38,19 +46,31 @@ async function cargarReporte(abrirVista = false) {
     const inicio = document.getElementById("fechaInicio").value;
     const fin = document.getElementById("fechaFin").value;
     const tipo = document.getElementById("tipoReporte").value;
-    if (!inicio || !fin) return alert("Selecciona las fechas del reporte.");
-    if (inicio > fin) return alert("La fecha inicial no puede ser mayor que la fecha final.");
+    const solicitud = ++solicitudReporte;
+    if (!inicio || !fin || inicio > fin) {
+        datosReporte = null;
+        limpiarVistaReporte('Selecciona un rango de fechas válido.');
+        return;
+    }
 
+    datosReporte = null;
+    limpiarVistaReporte('Consultando…');
     try {
         const parametros = new URLSearchParams({desde: inicio, hasta: fin, tipo});
-        datosReporte = await solicitarJson(
+        const respuesta = await solicitarJson(
             `${API_REPORTES}/resumen.php?${parametros.toString()}`
         );
+        if (solicitud !== solicitudReporte) return;
+        validarReporte(respuesta);
+        datosReporte = respuesta;
+        SaludDatos.recuperar('reporte');
         actualizarVista(tipo, datosReporte);
         if (abrirVista) abrirVistaPrevia();
     } catch (error) {
-        console.error("Error al generar el reporte:", error);
-        
+        if (solicitud !== solicitudReporte) return;
+        datosReporte = null;
+        limpiarVistaReporte('Consulta no disponible');
+        SaludDatos.fallo('reporte', error, {mensaje:'No se pudo consultar el reporte. Vuelve a generarlo para intentar de nuevo.'});
     }
 }
 
@@ -275,11 +295,16 @@ function cambiarEncabezado(selector, titulo, subtitulo) {
 
 function convertirEstados(filas = []) {
     const salida = {OTROS: 0};
-    filas.forEach(x => salida[String(x.estado || "OTROS").toUpperCase()] = Number(x.cantidad || 0));
+    filas.forEach(x => {
+        const estado = String(x.estado || 'OTROS').toUpperCase();
+        salida[estado] = Number(x.cantidad || 0);
+        if (!['CONFIRMADA','PENDIENTE','CANCELADA','COMPLETADO'].includes(estado)) salida.OTROS += salida[estado];
+    });
     return salida;
 }
 
 function exportarReporte() {
+    if (!datosReporte) { alert('Primero genera un reporte válido.'); return; }
     const tabla = document.getElementById("tablaReportes").closest("table");
     const lineas = Array.from(tabla.querySelectorAll("tr")).map(fila =>
         Array.from(fila.querySelectorAll("th,td"))
@@ -363,3 +388,37 @@ function formatearNumero(valor) { return Number(valor || 0).toLocaleString("es-G
 function formatearDecimal(valor) { return Number(valor || 0).toLocaleString("es-GT", {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
 function formatearTexto(texto) { return String(texto || "").toLocaleLowerCase("es").replace(/(^|[\s/-])\p{L}/gu, letra => letra.toLocaleUpperCase("es")); }
 function escaparHtml(valor) { return String(valor).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
+
+function fechaLocalReporte(fecha) {
+    return [fecha.getFullYear(),String(fecha.getMonth()+1).padStart(2,'0'),String(fecha.getDate()).padStart(2,'0')].join('-');
+}
+function limpiarVistaReporte(mensaje) {
+    document.querySelectorAll('.stats strong,.summary-card strong,.donut-center strong,.legend strong').forEach(n => n.textContent = '—');
+    document.querySelectorAll('.stats small').forEach(n => n.textContent = mensaje);
+    document.querySelector('.bar-chart').textContent = mensaje;
+    document.querySelector('.chart-badge').textContent = mensaje;
+    document.querySelector('.donut').style.background = '#e5e7eb';
+    const tabla = document.getElementById('tablaReportes');
+    tabla.replaceChildren();
+    const fila = document.createElement('tr');
+    const celda = document.createElement('td');
+    celda.colSpan = 7;
+    celda.textContent = mensaje;
+    fila.appendChild(celda); tabla.appendChild(fila);
+    document.getElementById('contenidoVistaReporte').replaceChildren();
+    cerrarVistaReporte();
+}
+
+function validarReporte(datos) {
+    if (!datos.resumen || !datos.distribucionEdades || !datos.detalles ||
+        !Array.isArray(datos.actividadMensual) || !Array.isArray(datos.resumenCitas) ||
+        !Array.isArray(datos.detalles.estadosCitas) || !Array.isArray(datos.detalles.estadosLaboratorio) ||
+        !Array.isArray(datos.detalles.inventario)) throw new Error('Respuesta de reporte incompleta.');
+    for (const clave of ['pacientes','medicosActivos','citasPeriodo','estudiosPeriodo','consultasFinalizadas',
+        'expedientesActivos','medicamentosActivos','unidadesDisponibles','stockBajo','valorInventario']) {
+        if (typeof datos.resumen[clave] !== 'number' || !Number.isFinite(datos.resumen[clave])) throw new Error('Indicador incompleto.');
+    }
+    for (const clave of ['ninos','jovenes','adultos','adultosMayores']) {
+        if (typeof datos.distribucionEdades[clave] !== 'number') throw new Error('Distribución incompleta.');
+    }
+}
